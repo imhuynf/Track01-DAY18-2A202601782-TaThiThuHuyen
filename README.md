@@ -4,7 +4,7 @@
 
 - **Mã học viên:** 2A202601782
 - **Họ và tên:** Tạ Thị Thu Huyền
-- **Tên nhóm:** 666
+- **Tên nhóm:**
 - **Ba thành viên còn lại:**
   1. Đỗ Thu Liễu — 2A202601898
   2. Phạm Tiến Đại — 2A202601610
@@ -25,9 +25,9 @@ Nhóm tiếp tục case từ Day 17: hỗ trợ học viên xác định phần 
 
 | Option | Mô tả ngắn | Prototype |
 |---|---|---|
-| **A — Hỏi giảng viên theo ngữ cảnh** | Học viên tự viết câu hỏi ngay trong bài. Hệ thống gắn câu hỏi với slide và mốc kiến thức; giảng viên xem, mở đúng ngữ cảnh và cập nhật trạng thái đã/chưa giải đáp. | [Mở Option A](prototype/Option%20A/student-instructor-prototype.html) |
-| **B — Sơ đồ kiến thức** | AI tổ chức nội dung bài thành bản đồ khái niệm. Học viên chọn nhánh, xem phạm vi slide, kiến thức liên quan và tài liệu để tự xác định vùng kiến thức đang thiếu. | [Mở Option B](prototype/Option%20B.html) |
-| **C — Khái niệm nền và chẩn đoán nhanh** | AI giải thích thuật ngữ theo ngữ cảnh slide và cung cấp bài kiểm tra ngắn để xác định khái niệm Strong/Weak. Kết quả được tổng hợp ẩn danh; giảng viên kiểm chứng, chỉnh sửa và duyệt tag trước khi phát hành. | [Mở Option C](prototype/Option%20C.html) |
+| **A — Hỏi giảng viên theo ngữ cảnh** | Học viên tự viết câu hỏi ngay trong bài. Hệ thống gắn câu hỏi với slide và mốc kiến thức; giảng viên xem, mở đúng ngữ cảnh và cập nhật trạng thái đã/chưa giải đáp. | [Mở Option A](prototypes/Option%20A.html) |
+| **B — Sơ đồ kiến thức** | AI tổ chức nội dung bài thành bản đồ khái niệm. Học viên chọn nhánh, xem phạm vi slide, kiến thức liên quan và tài liệu để tự xác định vùng kiến thức đang thiếu. | [Mở Option B](prototypes/Option%20B.html) |
+| **C — Khái niệm nền và chẩn đoán nhanh** | AI giải thích thuật ngữ theo ngữ cảnh slide và cung cấp bài kiểm tra ngắn để xác định khái niệm Strong/Weak. Kết quả được tổng hợp ẩn danh; giảng viên kiểm chứng, chỉnh sửa và duyệt tag trước khi phát hành. | [Mở Option C](prototypes/Option%20C.html) |
 
 Ba option nằm trên một spectrum phân chia vai trò:
 
@@ -42,7 +42,7 @@ USER CREATES / INITIATES   →    USER + AI CO-CREATE       →    AI PREPARES, 
 - **Prototype:** Tôi dựng bản HTML ban đầu trong giao diện đọc slide giống VLearn, chuẩn bị slide **Data Observability**, câu hỏi, đáp án, dữ liệu lớp mô phỏng và nội dung giải thích. Tôi viết phần liên hệ giữa lời giải thích với các thuật ngữ đang có trên slide như Data Quality, Data Pipeline, Schema, Monitoring, freshness, completeness và schema drift.
 - **Shared context/content:** Tôi cùng nhóm giữ chung bối cảnh học viên gặp thuật ngữ chưa hiểu khi bài giảng vẫn tiếp tục; task là nhận hỗ trợ đủ nhanh để hiểu phần nền và quay lại bài mà không mở Chat/Google. Trong Option C, tôi hiện thực bối cảnh này bằng popup thuật ngữ và panel kiểm tra nhanh ngay trên slide.
 - **Human–AI decisions:** Học viên chủ động mở hoặc đóng hỗ trợ. Nội dung chưa có tag phải mang nhãn “AI giải thích tạm thời/chưa được giảng viên duyệt”. AI chỉ đề xuất khái niệm từ kết quả Strong/Weak; giảng viên phải kiểm chứng ngữ cảnh, chỉnh sửa, duyệt và phát hành. Dữ liệu lớp chỉ hiển thị ở dạng tổng hợp ẩn danh và kết quả mới nhất thay thế kết quả cũ của cùng học viên.
-- **Facilitation:** Tôi facilitate các lượt thử Option C với Đỗ Thu Liễu và Phạm Tiến Đại, hướng dẫn tester thử popup từ khóa, thao tác bôi đen từ chưa có tag và luồng “Vẫn chưa hiểu!?”.
+- **Facilitation:** Tôi facilitate các lượt thử Option C, hướng dẫn tester thử popup từ khóa, thao tác bôi đen từ chưa có tag và luồng “Vẫn chưa hiểu!?”.
 - **Observation và tổng hợp feedback:** Tôi ghi nhận hai điểm nổi bật: giải thích ngay trên slide giúp người học không phải chuyển sang công cụ khác; bài kiểm tra nhanh giúp họ nhận ra phần kiến thức còn yếu. Điểm vướng là lượng thông tin AI và số bước trong quiz có thể làm người học mất tập trung hoặc lỡ thêm nội dung giảng.
 
 ## 5. Prototype Feedback
@@ -65,7 +65,6 @@ Nhóm ưu tiên tiếp tục **Option C** vì đây là phương án giải quy�
 
 ### Still Unproven
 
-- Chưa chứng minh được quiz xác định đúng kiến thức nền học viên đang thiếu.
 - Chưa chứng minh được hỗ trợ theo thời gian thực giúp học viên theo kịp bài tốt hơn cách tra cứu hiện tại.
 - Chưa biết ngưỡng hơn 50% Weak có phù hợp với các lớp khác nhau hay không.
 - Chưa biết giảng viên có chấp nhận thêm bước kiểm chứng, chỉnh sửa và phát hành tag hay không.

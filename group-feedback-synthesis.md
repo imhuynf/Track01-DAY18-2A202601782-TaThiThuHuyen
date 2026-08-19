@@ -6,7 +6,7 @@
 |---|---|---|---|
 | **Feedback 1** | Đỗ Thu Liễu, Nguyễn Trí Trung | Phạm Tiến Đại — cần hiểu **Data Pipeline** khi bài giảng vẫn tiếp tục | A/B/C với cùng task; chú trọng luồng hỏi giảng viên |
 | **Feedback 2** | Phạm Tiến Đại | Tạ Thị Thu Huyền — cần tìm đúng vùng kiến thức liên quan tới **Data Pipeline** | A/B/C với cùng task; chú trọng sơ đồ kiến thức |
-| **Feedback 3** | Tạ Thị Thu Huyền | Nguyễn Hoàng Việt — cần giải thích thuật ngữ và xác định phần nền còn yếu ngay trên slide | A/B/C với cùng task; chú trọng giải thích và quiz nhanh |
+| **Feedback 3** | Tạ Thị Thu Huyền | Phạm Hải Yến — cần giải thích thuật ngữ và xác định phần nền còn yếu ngay trên slide | A/B/C với cùng task; chú trọng giải thích và quiz nhanh |
 
 
 ## Bảng tổng hợp hành vi và feedback
@@ -61,9 +61,7 @@ Option B vẫn là reference tốt cho nhu cầu khám phá bức tranh tổng t
 
 ## STILL UNPROVEN SAU BA FEEDBACK
 
-- Chưa đo được option nào giúp quay lại bài nhanh nhất và bỏ lỡ ít nội dung nhất.
-- Chưa chứng minh quiz xác định đúng lỗ hổng kiến thức nền.
 - Chưa biết độ dài tối ưu của định nghĩa, popup và quiz trong lớp học thực tế.
 - Chưa kiểm chứng cách người học hiểu và sử dụng nhãn **AI tạm thời/Giảng viên đã duyệt**.
 - Chưa đánh giá tải công việc của giảng viên khi kiểm chứng, chỉnh sửa và phát hành nội dung.
-- Thứ tự test có thể ảnh hưởng lựa chọn cuối; cần counterbalance thứ tự A/B/C ở vòng test tiếp theo.
+- Thứ tự test có thể ảnh hưởng lựa chọn cuối cùng; cần xáo trộn thứ tự A/B/C ở vòng test tiếp theo.

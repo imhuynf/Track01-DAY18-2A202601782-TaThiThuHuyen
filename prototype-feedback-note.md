@@ -3,9 +3,9 @@
 ## Thông tin phiên
 
 - **Người facilitate:** Tạ Thị Thu Huyền
-- **Tester/context:** Nguyễn Hoàng Việt — học viên đang xem slide **Data Observability** trên VLearn, gặp thuật ngữ **Data Pipeline** chưa hiểu trong khi bài giảng vẫn tiếp tục.
-- **Thời gian:** 23:59, ngày 19/08/2026 (UTC+07:00)
-- **Các prototype được so sánh:** [Option A — Hỏi giảng viên theo ngữ cảnh](prototype/Option%20A/student-instructor-prototype.html), [Option B — Sơ đồ kiến thức](prototype/Option%20B.html) và [Option C — Khái niệm nền và chẩn đoán nhanh](prototype/Option%20C.html).
+- **Tester/context:** Phạm Hải Yến — học viên đang xem slide **Data Observability** trên VLearn, gặp thuật ngữ **Data Pipeline** chưa hiểu trong khi bài giảng vẫn tiếp tục.
+- **Thời gian:** 19/08/2026
+- **Các prototype được so sánh:** [Option A — Hỏi giảng viên theo ngữ cảnh](prototypes/Option%20A.html), [Option B — Sơ đồ kiến thức](prototypes/Option%20B.html) và [Option C — Khái niệm nền và chẩn đoán nhanh](prototypes/Option%20C.html).
 - **Task được giao:** Với cùng một tình huống và thuật ngữ **Data Pipeline**, thử từng option để tìm phần hỗ trợ phù hợp, xác định chỗ mình còn vướng và quay lại slide mà không mở Chat/Google.
 - **Thứ tự test:** A → B → C.
 
@@ -17,8 +17,8 @@
 | **Chỗ dừng, do dự hoặc hiểu sai** | Sau khi gửi câu hỏi, tester dừng lại ở trạng thái **“Chưa trả lời”** và không biết giảng viên sẽ phản hồi trong bao lâu. Tester cũng sửa câu hỏi một lần vì sợ câu hỏi ban đầu quá chung. | Tester mở liên tiếp ba nhánh **Data Observability → Data Quality → Data Pipeline**. Sơ đồ trở nên dày, khiến tester mất vài giây để xác định node nào liên quan trực tiếp tới thuật ngữ đang xem. | Tester do dự ngắn ở nút **“Khái niệm nền”** vì tưởng đây chỉ là phần cài đặt. Trong quiz, tester đọc kỹ câu đầu nhưng lướt phần mô tả dưới đáp án ở hai câu sau vì muốn quay lại bài nhanh. |
 | **Evidence được đọc hay bỏ qua** | Tester đọc trạng thái câu hỏi và một câu hỏi tương tự, nhưng bỏ qua metadata về slide vì đã biết mình đang ở slide nào. | Tester đọc mô tả của node **Data Pipeline** và mối liên hệ với ETL/ELT, nhưng bỏ qua tài liệu tham khảo và hai nhánh phụ. | Tester đọc định nghĩa ngắn, phần **“Liên hệ với slide”** và kết quả Strong/Weak. Tester nhận ra nhãn **“Giảng viên đã duyệt”**, nhưng bỏ qua danh sách **Kiến thức cần có** và link **“Xem thêm”**. |
 | **Breakdown chính** | Câu trả lời không xuất hiện ngay nên Option A chưa giải quyết được nhu cầu hỗ trợ trong lúc bài giảng vẫn tiếp tục. | Cấu trúc tổng quan hữu ích nhưng số node mở cùng lúc làm tăng tải nhận thức và thời gian tìm đúng nội dung. | Phần giải thích cho khái niệm Weak còn dài; panel quiz che một phần slide và ba câu hỏi vẫn có thể làm người học lỡ thêm bài. |
-| **Cách sửa hoặc lấy lại control** | Tester đóng bảng hỏi sau khi thấy câu hỏi đã được ghi nhận và quay lại slide, nhưng vẫn chưa có câu trả lời để tiếp tục hiểu bài. | Tester thu gọn hai nhánh không liên quan, quay lại node **Data Pipeline**, đọc mô tả rồi đóng sơ đồ. | Tester đóng popup bằng nút ×, hoàn thành quiz, xem kết quả Schema ở trạng thái Weak, rồi bấm **“Tiếp tục học”** để trở lại slide. Đường quay lại được nhận ra ngay. |
-| **Cảm nhận sau khi hoàn thành** | Có cảm giác an tâm vì câu hỏi được chuyển tới người thật, nhưng không phù hợp khi cần câu trả lời ngay. | Hiểu bức tranh tổng thể tốt hơn, nhưng phải tự xác định đường đi trong bản đồ. | Nắm được định nghĩa ngay tại chỗ và biết cụ thể mình đang yếu ở Schema, nên có thể quyết định xem giải thích hay quay lại bài. |
+| **Cách sửa hoặc lấy lại control** | Tester đóng bảng hỏi sau khi thấy câu hỏi đã được ghi nhận và quay lại slide, nhưng vẫn chưa có câu trả lời để tiếp tục hiểu bài. | Tester thu gọn hai nhánh không liên quan, quay lại node **Data Pipeline**, đọc mô tả rồi đóng sơ đồ. | Tester đóng popup bằng nút ×, hoàn thành quiz, xem kết quả thuật ngữ ở trạng thái Weak, rồi bấm **“Tiếp tục học”** để trở lại slide. Đường quay lại được nhận ra ngay. |
+| **Cảm nhận sau khi hoàn thành** | Có cảm giác an tâm vì câu hỏi được chuyển tới người thật, nhưng không phù hợp khi cần câu trả lời ngay. | Hiểu bức tranh tổng thể tốt hơn, nhưng phải tự xác định đường đi trong bản đồ. | Nắm được định nghĩa ngay tại chỗ và biết cụ thể mình đang yếu ở thuật ngữ đó, nên có thể quyết định xem giải thích hay quay lại bài. |
 
 ## Feedback sau khi so sánh
 
@@ -72,8 +72,6 @@ Nhóm chọn **Option C** để phát triển tiếp và sẽ:
 
 ### STILL UNPROVEN
 
-- Chưa chứng minh được quiz xác định đúng lỗ hổng kiến thức trong test người dùng thực tế.
 - Chưa đo được thời gian hoàn thành và lượng nội dung bài giảng bị bỏ lỡ ở từng option.
-- Chưa biết người học có hiểu nhất quán hai nhãn **“AI giải thích tạm thời”** và **“Giảng viên đã duyệt”** hay không.
 - Chưa kiểm chứng liệu ba câu hỏi có đủ ngắn cho bối cảnh lớp học trực tiếp.
 - Thứ tự test A → B → C có thể tạo hiệu ứng học trước hoặc thiên lệch gần nhất; phiên sau cần đổi thứ tự giữa các tester.

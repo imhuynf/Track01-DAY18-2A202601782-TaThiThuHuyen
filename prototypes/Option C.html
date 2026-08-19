@@ -1382,9 +1382,9 @@
 <body>
   <header class="app-header">
     <button class="back" type="button" aria-label="Quay lại">←</button>
-    <div class="course-title">Bài 3 · day18-data-observability</div>
+    <div class="course-title">Bài 21 · day10-data-pipeline-observability</div>
     <div class="header-progress" aria-label="Tiến độ bài học">
-      <span>0/3 bài</span><div class="progress-track"></div>
+      <span>0/7 bài</span><div class="progress-track"></div>
     </div>
     <div class="header-divider"></div>
     <button class="header-test-button" id="instructorFlowButton" type="button" aria-expanded="false" aria-controls="instructorPanel">
@@ -1407,25 +1407,25 @@
       <nav class="lesson-list">
         <div class="lesson-item">
           <span class="lesson-dot play">▷</span>
-          <div><div class="lesson-name">Day18-Track02-Data_Observability</div><div class="lesson-kind">Slide</div></div>
+          <div><div class="lesson-name">Day10-Data_Pipeline_Observability</div><div class="lesson-kind">Slide</div></div>
         </div>
         <div class="lesson-item active">
           <span class="lesson-dot"></span>
-          <div><div class="lesson-name">day18-data-observability</div><div class="lesson-kind">Slide</div></div>
+          <div><div class="lesson-name">day10-data-pipeline-observability</div><div class="lesson-kind">Slide</div></div>
         </div>
         <div class="lesson-item">
           <span class="lesson-dot"></span>
-          <div><div class="lesson-name">day18-data-observability-reading</div><div class="lesson-kind">Slide</div></div>
+          <div><div class="lesson-name">day10-data-pipeline-reading</div><div class="lesson-kind">Slide</div></div>
         </div>
       </nav>
     </aside>
 
     <main>
       <div class="reader">
-        <section class="slide-frame" id="slideFrame" aria-label="Slide 6: Data Observability">
+        <section class="slide-frame" id="slideFrame" aria-label="Slide 1: Tổng quan Data Pipeline">
           <article class="slide">
             <header class="slide-titlebar">
-              <div class="slide-title">Data Observability</div>
+              <div class="slide-title">Tổng quan Data Pipeline</div>
               <div class="uni"><span class="uni-symbol"></span><span>VINUNIVERSITY</span></div>
             </header>
             <div class="title-underline"></div>
@@ -1433,40 +1433,40 @@
             <div class="slide-content" id="slideContent">
               <div class="era-row">
                 <section class="era">
-                  <div class="era-year">TRUST</div>
+                  <div class="era-year">THU THẬP</div>
                   <div class="term-card">
+                    <button class="approved-term" type="button" data-term="ingestion" aria-expanded="false">Data<br>Ingestion</button>
+                  </div>
+                  <div class="era-copy">Nguồn dữ liệu<br>· Batch<br>· Streaming</div>
+                </section>
+                <div class="arrow" aria-hidden="true"></div>
+                <section class="era">
+                  <div class="era-year blue">BIẾN ĐỔI</div>
+                  <div class="term-card lake">
+                    <button class="approved-term" type="button" data-term="etl" aria-expanded="false">ETL<br>/ ELT</button>
+                  </div>
+                  <div class="era-copy">Extract<br>· Transform<br>· Load</div>
+                </section>
+                <div class="arrow" aria-hidden="true"></div>
+                <section class="era">
+                  <div class="era-year red">TIN CẬY</div>
+                  <div class="term-card lakehouse">
                     <button class="approved-term" type="button" data-term="quality" aria-expanded="false">Data<br>Quality</button>
                   </div>
                   <div class="era-copy">Completeness<br>· Correctness<br>· Consistency</div>
                 </section>
-                <div class="arrow" aria-hidden="true"></div>
-                <section class="era">
-                  <div class="era-year blue">FLOW</div>
-                  <div class="term-card lake">
-                    <button class="approved-term" type="button" data-term="pipeline" aria-expanded="false">Data<br>Pipeline</button>
-                  </div>
-                  <div class="era-copy">Sources → Transform<br>· Schema changes<br>· Downstream impact</div>
-                </section>
-                <div class="arrow" aria-hidden="true"></div>
-                <section class="era">
-                  <div class="era-year red">SIGNALS</div>
-                  <div class="term-card lakehouse">
-                    <button class="approved-term" type="button" data-term="monitoring" aria-expanded="false">Monitoring</button>
-                  </div>
-                  <div class="era-copy">Freshness<br>· Anomalies<br>· Alerts</div>
-                </section>
               </div>
 
               <div class="innovation">
-                <strong>Data Observability:</strong> liên tục theo dõi chất lượng, schema và trạng thái của data pipeline để phát hiện dữ liệu thiếu, sai hoặc đến muộn.<br>
-                <strong>Signals:</strong> freshness + completeness + correctness + <button class="published-term" id="schemaDriftSlideTerm" type="button" disabled>schema drift</button> + anomaly detection.
+                <strong>Data Pipeline là chuỗi các bước thu thập, biến đổi và chuyển dữ liệu từ nguồn đến nơi sử dụng.</strong><br>
+                <strong>Khái niệm liên quan:</strong> Data Ingestion · ETL/ELT · Data Quality · Monitoring · Schema (<button class="published-term" id="schemaDriftSlideTerm" type="button" disabled>schema drift</button>).
               </div>
             </div>
 
             <footer class="slide-footer">
               <div class="footer-cell">Giảng viên (VinUni)</div>
               <div class="footer-cell">AICB · Ngày 18</div>
-              <div class="footer-cell">Tuần 4&nbsp;&nbsp;&nbsp; 18 / 50</div>
+              <div class="footer-cell">Tuần 4&nbsp;&nbsp;&nbsp; 1 / 7</div>
             </footer>
 
           </article>
@@ -1494,7 +1494,7 @@
 
                 <form class="concept-quiz" id="conceptQuiz">
                   <fieldset class="quiz-question" data-question="quality">
-                    <legend><span>1</span>Một bảng dữ liệu đến đúng giờ nhưng 30% giá trị <code>customer_id</code> bị thiếu. Vấn đề chính thuộc khía cạnh nào?</legend>
+                    <legend><span>1</span>Trong một Data Pipeline, bảng dữ liệu đến đúng giờ nhưng 30% giá trị <code>customer_id</code> bị thiếu. Vấn đề chính thuộc khía cạnh nào?</legend>
                     <label class="quiz-choice"><input type="radio" name="quality" value="freshness"><span><b>Freshness</b><small>Dữ liệu có đến đúng thời điểm hay không</small></span></label>
                     <label class="quiz-choice"><input type="radio" name="quality" value="completeness"><span><b>Completeness</b><small>Các giá trị cần thiết có được điền đầy đủ hay không</small></span></label>
                     <label class="quiz-choice"><input type="radio" name="quality" value="correctness"><span><b>Correctness</b><small>Giá trị có phản ánh đúng thực tế hay không</small></span></label>
@@ -1508,7 +1508,7 @@
                   </fieldset>
 
                   <fieldset class="quiz-question" data-question="monitoring">
-                    <legend><span>3</span>Muốn phát hiện bảng báo cáo hằng ngày chưa được cập nhật trước 8:00, hệ thống nên theo dõi tín hiệu nào?</legend>
+                    <legend><span>3</span>Muốn phát hiện đầu ra của Data Pipeline chưa được cập nhật trước 8:00, hệ thống nên theo dõi tín hiệu nào?</legend>
                     <label class="quiz-choice"><input type="radio" name="monitoring" value="correctness"><span><b>Correctness</b><small>Giá trị trong bảng có đúng hay không</small></span></label>
                     <label class="quiz-choice"><input type="radio" name="monitoring" value="schema"><span><b>Schema</b><small>Tên cột và kiểu dữ liệu có thay đổi hay không</small></span></label>
                     <label class="quiz-choice"><input type="radio" name="monitoring" value="freshness"><span><b>Freshness</b><small>Lần cập nhật mới nhất có đúng thời gian mong đợi hay không</small></span></label>
@@ -1588,12 +1588,12 @@
 
         <nav class="thumbnail-strip" aria-label="Danh sách slide">
           <button class="thumb-nav" type="button" aria-label="Slide trước">‹</button>
-          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">1</span></div>
+          <div class="thumbnail selected"><div class="thumb-blue"></div><div class="thumb-cards"><span></span><span></span><span></span></div><span class="thumb-number">1</span></div>
           <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">2</span></div>
           <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">3</span></div>
           <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">4</span></div>
           <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">5</span></div>
-          <div class="thumbnail selected"><div class="thumb-blue"></div><div class="thumb-cards"><span></span><span></span><span></span></div><span class="thumb-number">6</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">6</span></div>
           <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">7</span></div>
           <button class="thumb-nav" type="button" aria-label="Slide sau">›</button>
         </nav>
@@ -1611,7 +1611,7 @@
       <button class="switch" id="globalSwitch" type="button" role="switch" aria-checked="true" aria-label="Bật hoặc tắt cho toàn bài"></button>
     </div>
     <div class="menu-row">
-      <div><div class="scope-label">Slide 6</div><div class="scope-status" id="slideStatus">Đang hiện</div></div>
+      <div><div class="scope-label">Slide 1</div><div class="scope-status" id="slideStatus">Đang hiện</div></div>
       <button class="scope-button" id="slideToggle" type="button">Ẩn</button>
     </div>
     <div class="menu-summary"><span class="verified-dot">✓</span><span id="approvedTermCount">3 thuật ngữ đã được giảng viên duyệt</span></div>
@@ -1708,40 +1708,44 @@
       "use strict";
 
       const approvedTerms = {
+        ingestion: {
+          title: "Data Ingestion",
+          translation: "Thu thập dữ liệu",
+          definition: "Bước đưa dữ liệu từ các nguồn như database, API, file hoặc luồng sự kiện vào hệ thống xử lý.",
+          context: "Data Ingestion là điểm bắt đầu của Data Pipeline và có thể diễn ra theo lô hoặc theo luồng thời gian thực.",
+          prerequisites: ["Data source", "Batch", "Streaming"]
+        },
+        etl: {
+          title: "ETL / ELT",
+          translation: "Hai cách tổ chức biến đổi dữ liệu",
+          definition: "ETL biến đổi dữ liệu trước khi nạp vào nơi sử dụng; ELT nạp dữ liệu trước rồi mới biến đổi trong hệ thống đích.",
+          context: "Cả ETL và ELT đều mô tả cách các bước Extract, Transform và Load được sắp xếp bên trong Data Pipeline.",
+          prerequisites: ["Extract", "Transform", "Load"]
+        },
         quality: {
           title: "Data Quality",
           translation: "Chất lượng dữ liệu",
           definition: "Mức độ dữ liệu đầy đủ, chính xác, nhất quán và phù hợp để sử dụng cho mục đích mong muốn.",
-          context: "Data Observability theo dõi các tín hiệu như completeness và correctness để phát hiện dữ liệu không còn đáng tin cậy.",
+          context: "Data Quality giúp kiểm tra dữ liệu đi qua pipeline có đủ đầy, chính xác và nhất quán trước khi được sử dụng hay không.",
           prerequisites: ["Completeness", "Correctness", "Consistency"]
-        },
-        pipeline: {
-          title: "Data Pipeline",
-          translation: "Luồng xử lý dữ liệu",
-          definition: "Chuỗi bước đưa dữ liệu từ nguồn, qua các thao tác biến đổi, đến nơi được dùng cho báo cáo hoặc phân tích.",
-          context: "Một thay đổi schema hoặc bước xử lý lỗi có thể làm gián đoạn dữ liệu ở các hệ thống phía sau.",
-          prerequisites: ["Data source", "Transformation", "Schema"]
-        },
-        monitoring: {
-          title: "Monitoring",
-          translation: "Theo dõi hệ thống dữ liệu",
-          definition: "Việc quan sát liên tục các chỉ số và sự kiện để phát hiện dữ liệu đến muộn, thiếu, sai hoặc có biến động bất thường.",
-          context: "Freshness, anomalies và alerts là các tín hiệu giúp Data Observability cảnh báo vấn đề sớm.",
-          prerequisites: ["Freshness", "Anomaly", "Alert"]
         },
         schemaDrift: {
           title: "Schema drift",
           translation: "Thay đổi ngoài dự kiến của cấu trúc dữ liệu",
           definition: "Schema drift là thay đổi ngoài dự kiến trong cấu trúc dữ liệu, như tên cột, kiểu dữ liệu hoặc trường bắt buộc; thay đổi này có thể làm các bước phía sau của pipeline lỗi.",
-          context: "Trên slide Data Observability, schema drift là một tín hiệu cần monitoring để phát hiện thay đổi trước khi ảnh hưởng tới data pipeline.",
+          context: "Trên slide Data Pipeline, schema drift là thay đổi của Schema cần được Monitoring phát hiện trước khi ảnh hưởng tới các bước phía sau.",
           prerequisites: ["Schema", "Data Pipeline", "Monitoring"]
         }
       };
 
       const contextualTerms = {
+        "data ingestion": ["Data Ingestion", "Thu thập dữ liệu", "Bước đưa dữ liệu từ database, API, file hoặc luồng sự kiện vào hệ thống xử lý của Data Pipeline."],
+        "etl/elt": ["ETL / ELT", "Hai cách tổ chức biến đổi dữ liệu", "ETL biến đổi trước khi nạp; ELT nạp trước rồi biến đổi trong hệ thống đích."],
+        "etl": ["ETL", "Extract, Transform, Load", "Quy trình trích xuất dữ liệu, biến đổi dữ liệu rồi nạp vào nơi sử dụng."],
+        "elt": ["ELT", "Extract, Load, Transform", "Quy trình trích xuất và nạp dữ liệu trước, sau đó mới biến đổi trong hệ thống đích."],
         "data observability": ["Data Observability", "Khả năng quan sát dữ liệu", "Khả năng hiểu trạng thái và độ tin cậy của dữ liệu bằng cách theo dõi chất lượng, schema, pipeline, freshness và các bất thường."],
         "data quality": ["Data Quality", "Chất lượng dữ liệu", "Mức độ dữ liệu đầy đủ, chính xác, nhất quán và phù hợp với mục đích sử dụng."],
-        "data pipeline": ["Data Pipeline", "Luồng xử lý dữ liệu", "Chuỗi bước đưa dữ liệu từ nguồn qua biến đổi đến hệ thống báo cáo hoặc phân tích."],
+        "data pipeline": ["Data Pipeline", "Luồng xử lý dữ liệu", "Data Pipeline là chuỗi các bước thu thập, biến đổi và chuyển dữ liệu từ nguồn đến nơi sử dụng."],
         "schema": ["Schema", "Cấu trúc dữ liệu mong đợi", "Quy định tên cột, kiểu dữ liệu và các trường bắt buộc mà một bảng hoặc pipeline mong đợi."],
         "monitoring": ["Monitoring", "Theo dõi", "Việc quan sát liên tục các tín hiệu để phát hiện vấn đề trong dữ liệu hoặc data pipeline."],
         "anomalies": ["Anomalies", "Các bất thường", "Những thay đổi hoặc giá trị lệch đáng kể so với mẫu dữ liệu thường thấy."],
@@ -1793,7 +1797,7 @@
         quality: {
           name: "Data Quality",
           simple: "Data Quality cho biết dữ liệu có đủ đáng tin để sử dụng hay không. Dữ liệu tốt cần đủ thông tin, đúng với thực tế và nhất quán giữa các nguồn.",
-          connection: "Trên slide, completeness và correctness là hai tín hiệu Data Observability theo dõi. Một bảng đến đúng giờ vẫn có thể có chất lượng kém nếu nhiều trường bắt buộc bị thiếu.",
+          connection: "Trên slide Data Pipeline, Data Quality là lớp kiểm soát độ tin cậy của dữ liệu. Một bảng đến đúng giờ vẫn có thể có chất lượng kém nếu nhiều trường bắt buộc bị thiếu.",
           links: [
             { label: "AWS Glue Data Quality", url: "https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html" },
             { label: "Google Cloud · Auto data quality", url: "https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" }
@@ -1815,13 +1819,12 @@
             { label: "Google Cloud · Monitor Dataflow jobs", url: "https://docs.cloud.google.com/dataflow/docs/guides/monitoring-overview" }
           ]
         },
-        observability: {
-          name: "Data Observability",
-          simple: "Data Observability là khả năng nhìn vào các tín hiệu để hiểu dữ liệu đang ở trạng thái nào và có đáng tin hay không.",
-          connection: "Slide kết hợp Data Quality, Data Pipeline và Monitoring. Khi theo dõi completeness, correctness, schema, freshness và anomalies cùng nhau, hệ thống có thể phát hiện vấn đề và lần ngược nơi pipeline bắt đầu sai.",
+        pipeline: {
+          name: "Data Pipeline",
+          simple: "Data Pipeline là chuỗi các bước thu thập, biến đổi và chuyển dữ liệu từ nguồn đến nơi sử dụng.",
+          connection: "Slide nối Data Ingestion với ETL/ELT và Data Quality; Monitoring cùng Schema giúp theo dõi và bảo vệ luồng dữ liệu trong quá trình vận hành.",
           links: [
-            { label: "Google Cloud · BigQuery monitoring", url: "https://docs.cloud.google.com/bigquery/docs/monitoring" },
-            { label: "Google Cloud · Auto data quality", url: "https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview" }
+            { label: "Wikipedia · Data pipeline", url: "https://en.wikipedia.org/wiki/Data_pipeline" }
           ]
         }
       };
@@ -2106,7 +2109,7 @@
         const hasWeakConcept = state.weakConcepts.length > 0;
         resultSummary.textContent = hasWeakConcept
           ? "Một số khái niệm nền bạn có thể cần xem lại trước khi tiếp tục."
-          : "Bạn đang có nền tảng tốt để tiếp tục phần Data Observability.";
+          : "Bạn đang có nền tảng tốt để tiếp tục phần Data Pipeline.";
         resultNote.classList.toggle("all-strong", !hasWeakConcept);
         resultNote.querySelector("span").textContent = hasWeakConcept ? "!" : "✓";
         resultNote.querySelector("p").textContent = hasWeakConcept
@@ -2126,10 +2129,10 @@
           { key: "schema", name: "Schema", strong: selectedAnswers.schema === quizAnswerKey.schema },
           { key: "monitoring", name: "Monitoring", strong: selectedAnswers.monitoring === quizAnswerKey.monitoring }
         ];
-        const observabilityStrong = foundationalStatuses.every((status) => status.strong);
+        const pipelineStrong = foundationalStatuses.every((status) => status.strong);
         state.conceptStatuses = [
           ...foundationalStatuses,
-          { key: "observability", name: "Data Observability", strong: observabilityStrong }
+          { key: "pipeline", name: "Data Pipeline", strong: pipelineStrong }
         ];
         state.weakConcepts = state.conceptStatuses
           .filter((status) => !status.strong)
@@ -2145,10 +2148,10 @@
       }
 
       function renderWeakExplanations() {
-        const conceptKeys = state.weakConcepts.length ? state.weakConcepts : ["observability"];
+        const conceptKeys = state.weakConcepts.length ? state.weakConcepts : ["pipeline"];
         explanationStateView.querySelector("h3").textContent = state.weakConcepts.length
           ? "Giải thích khái niệm cần xem lại"
-          : "Củng cố Data Observability";
+          : "Củng cố Data Pipeline";
         weakExplanationList.innerHTML = conceptKeys.map((key) => {
           const concept = conceptLearning[key];
           const links = concept.links.map((link) => `
@@ -2489,7 +2492,7 @@
         if (!state.globalEnabled) return;
         state.slideHidden = !state.slideHidden;
         renderFeatureState();
-        showToast(state.slideHidden ? "Đã ẩn gợi ý ở Slide 6." : "Đã hiện lại gợi ý ở Slide 6.");
+        showToast(state.slideHidden ? "Đã ẩn gợi ý ở Slide 1." : "Đã hiện lại gợi ý ở Slide 1.");
       });
 
       slideContent.addEventListener("pointerup", (event) => {

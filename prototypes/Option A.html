@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option A · Hỏi giảng viên theo ngữ cảnh</title>
+  <style>
+    :root {
+      --navy: #183b63;
+      --navy-2: #244f7e;
+      --blue: #2369d8;
+      --blue-soft: #eaf2ff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #dfe5ec;
+      --surface: #ffffff;
+      --shell: #f4f6f8;
+      --green: #16835f;
+      --green-soft: #e8f7f1;
+      --amber: #a85d00;
+      --amber-soft: #fff3d5;
+      --red: #c93d4b;
+      --shadow: 0 14px 38px rgba(26, 45, 70, 0.14);
+      --header-h: 62px;
+      --demo-h: 38px;
+      --sidebar-w: 272px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--shell);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, textarea { font: inherit; }
+    button:not(:disabled) { cursor: pointer; }
+    button:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(35, 105, 216, 0.24);
+      outline-offset: 2px;
+    }
+    [hidden] { display: none !important; }
+
+    .demo-bar {
+      height: var(--demo-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: #fff;
+      background: #101828;
+      border-bottom: 1px dashed rgba(255,255,255,.24);
+    }
+    .demo-label {
+      padding: 3px 8px;
+      border-radius: 5px;
+      color: #1b2433;
+      background: #f6ad17;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    .role-switch { display: flex; align-items: center; gap: 8px; }
+    .role-caption { color: rgba(255,255,255,.62); font-size: 12px; }
+    .role-options {
+      display: flex;
+      gap: 2px;
+      padding: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+    }
+    .role-button {
+      min-width: 86px;
+      padding: 5px 13px;
+      border: 0;
+      border-radius: 999px;
+      color: rgba(255,255,255,.72);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .role-button.active { color: #182230; background: #fff; }
+
+    .app-header {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    .breadcrumb { display: flex; align-items: center; gap: 13px; min-width: 0; }
+    .back-icon { color: #667085; font-size: 22px; }
+    .breadcrumb strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 15px;
+    }
+    .header-status { display: flex; align-items: center; gap: 14px; flex: 0 0 auto; }
+    .progress-label { color: var(--muted); font-size: 13px; font-weight: 600; }
+    .progress-track {
+      width: 112px;
+      height: 6px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #e8ecf1;
+    }
+    .progress-fill { height: 100%; width: 14%; background: var(--blue); transition: width .2s ease; }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .app-body {
+      height: calc(100vh - var(--demo-h) - var(--header-h));
+      display: flex;
+      min-height: 560px;
+    }
+    .sidebar {
+      width: var(--sidebar-w);
+      flex: 0 0 var(--sidebar-w);
+      overflow-y: auto;
+      padding: 18px 10px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+    }
+    .sidebar-heading {
+      margin: 0 10px 18px;
+      color: #8a94a5;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+    .module-label { margin: 0 10px 5px; color: #667085; font-size: 12px; font-weight: 700; }
+    .slide-label { margin: 0 10px 10px; font-size: 15px; font-weight: 800; }
+    .slide-nav { display: grid; gap: 4px; }
+    .slide-nav-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 9px;
+      text-align: left;
+      background: transparent;
+    }
+    .slide-nav-button:hover { background: #f5f7fa; }
+    .slide-nav-button.active { background: var(--blue-soft); }
+    .slide-dot {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #cbd3df;
+      border-radius: 50%;
+      color: #8a94a5;
+      background: #fff;
+      font-size: 9px;
+    }
+    .active .slide-dot { color: #fff; border-color: var(--navy); background: var(--navy); }
+    .slide-name {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .slide-number { display: block; margin-top: 2px; color: #98a2b3; font-size: 11px; }
+    .module-two {
+      margin: 16px 10px 0;
+      padding-top: 14px;
+      border-top: 1px solid #edf0f4;
+      color: #8a94a5;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .workspace { flex: 1; min-width: 0; overflow: auto; padding: 20px 24px 26px; }
+    .viewer { max-width: 1120px; margin: 0 auto; }
+    .question-context {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border: 1px solid #bfd5fa;
+      border-radius: 10px;
+      background: #edf4ff;
+    }
+    .context-copy { min-width: 0; }
+    .context-label { color: #365d91; font-size: 11px; font-weight: 800; letter-spacing: .05em; }
+    .context-question { margin: 4px 0 0; font-size: 14px; font-weight: 700; }
+    .context-meta { margin-top: 5px; color: #5f6f85; font-size: 12px; }
+    .context-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+
+    .slide-card {
+      overflow: hidden;
+      border: 1px solid #d9e0e8;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 3px 9px rgba(31,48,72,.06);
+    }
+    .slide-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      padding: 0 28px;
+      color: #fff;
+      background: var(--navy);
+    }
+    .slide-title-bar h1 { margin: 0; font-size: clamp(20px, 2.2vw, 28px); }
+    .brand-mark { color: rgba(255,255,255,.82); font-size: 12px; font-weight: 800; }
+    .red-rule { width: 58px; height: 4px; margin-left: 28px; background: #ef3340; }
+    .slide-content {
+      min-height: 470px;
+      padding: 44px 54px 36px;
+      font-size: clamp(16px, 1.55vw, 20px);
+      line-height: 1.65;
+    }
+    .slide-content ul { margin: 0; padding-left: 25px; }
+    .slide-content li + li { margin-top: 12px; }
+    .diagram {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      padding-top: 34px;
+    }
+    .diagram-box {
+      min-height: 122px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      border-radius: 15px;
+      color: #fff;
+      text-align: center;
+      font-weight: 800;
+      background: var(--navy-2);
+    }
+    .diagram-arrow { color: #6e8fb6; font-size: 28px; font-weight: 800; }
+    .slide-footer {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr .9fr;
+      color: #fff;
+      background: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .slide-footer span { padding: 7px 18px; text-align: center; border-left: 1px solid rgba(255,255,255,.12); }
+
+    .reader-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .toolbar-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: #657084; font-size: 12px; }
+    .tool-pill { padding: 6px 9px; border-radius: 7px; }
+    .tool-pill.active { color: var(--blue); background: var(--blue-soft); font-weight: 800; }
+    .ask-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border: 0;
+      border-radius: 9px;
+      color: #fff;
+      background: var(--navy);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .ask-button[aria-expanded="true"] { background: var(--blue); }
+    .filmstrip { display: flex; gap: 9px; margin-top: 10px; padding: 10px; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .thumbnail {
+      width: 82px;
+      height: 52px;
+      flex: 0 0 82px;
+      position: relative;
+      border: 1px solid #dbe1e8;
+      border-radius: 6px;
+      background: linear-gradient(var(--navy) 0 12px, #fff 12px);
+    }
+    .thumbnail::after { content: attr(data-slide); position: absolute; left: 5px; bottom: 4px; width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--navy); font-size: 10px; }
+    .thumbnail.active { border: 2px solid var(--blue); box-shadow: 0 0 0 2px rgba(35,105,216,.14); }
+
+    .dashboard { max-width: 1080px; margin: 0 auto; }
+    .dashboard-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .dashboard-header h1 { margin: 0; font-size: 25px; }
+    .dashboard-header p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
+    .summary-card { padding: 16px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+    .summary-card strong { display: block; font-size: 25px; }
+    .summary-card span { color: var(--muted); font-size: 12px; }
+    .milestone-section + .milestone-section { margin-top: 22px; }
+    .milestone-title { display: flex; align-items: center; gap: 9px; margin: 0 0 10px; font-size: 15px; }
+    .milestone-badge { padding: 4px 8px; border-radius: 99px; color: #fff; background: var(--navy); font-size: 10px; }
+    .question-list { display: grid; gap: 9px; }
+    .question-card {
+      display: grid;
+      grid-template-columns: 5px minmax(0,1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .question-card:hover { border-color: #b9c8db; box-shadow: 0 3px 10px rgba(31,48,72,.06); }
+    .question-accent { align-self: stretch; border-radius: 99px; background: #e19824; }
+    .question-card.answered .question-accent { background: var(--green); }
+    .question-text { margin: 0; font-size: 13px; font-weight: 700; line-height: 1.45; }
+    .question-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .question-card-actions { display: flex; align-items: center; gap: 8px; }
+
+    .status-pill { display: inline-flex; align-items: center; padding: 5px 8px; border-radius: 99px; font-size: 10px; font-weight: 800; white-space: nowrap; }
+    .status-pill.waiting { color: var(--amber); background: var(--amber-soft); }
+    .status-pill.answered { color: var(--green); background: var(--green-soft); }
+    .small-button, .secondary-button, .primary-button {
+      border-radius: 8px;
+      font-weight: 750;
+    }
+    .small-button { padding: 6px 9px; border: 1px solid #cbd5e1; color: #4b5c72; background: #fff; font-size: 11px; }
+    .secondary-button { padding: 8px 12px; border: 1px solid #bfd0e5; color: #31577f; background: #fff; font-size: 12px; }
+    .primary-button { padding: 8px 12px; border: 0; color: #fff; background: var(--green); font-size: 12px; }
+    .primary-button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .drawer-scrim { position: fixed; inset: calc(var(--demo-h) + var(--header-h)) 0 0 0; z-index: 20; background: rgba(16,24,40,.22); opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+    .drawer-scrim.open { opacity: 1; pointer-events: auto; }
+    .question-drawer {
+      position: fixed;
+      z-index: 21;
+      top: calc(var(--demo-h) + var(--header-h));
+      right: 0;
+      bottom: 0;
+      width: min(410px, 94vw);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(102%);
+      background: #fff;
+      border-left: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      transition: transform .22s ease;
+    }
+    .question-drawer.open { transform: translateX(0); }
+    .drawer-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px; border-bottom: 1px solid var(--line); }
+    .drawer-header h2 { margin: 0; font-size: 17px; }
+    .drawer-header p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .icon-button { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 50%; color: #5e6d82; background: #f2f4f7; font-size: 19px; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
+    .expectation-note { margin-bottom: 14px; padding: 10px 11px; border: 1px solid #f1d698; border-radius: 8px; color: #714912; background: #fffaec; font-size: 12px; line-height: 1.45; }
+    .drawer-question-list { display: grid; gap: 9px; }
+    .drawer-question { padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+    .drawer-question.mine { border-color: #b9d0f5; background: #f3f7ff; }
+    .drawer-question-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .drawer-question p { margin: 0; font-size: 13px; font-weight: 650; line-height: 1.45; }
+    .answer-box { margin-top: 9px; padding: 9px; border-left: 3px solid var(--green); color: #35584d; background: #f1faf6; font-size: 12px; line-height: 1.45; }
+    .drawer-question-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; color: var(--muted); font-size: 11px; }
+    .like-button { padding: 4px 7px; border: 0; border-radius: 6px; color: #667085; background: #f2f4f7; font-size: 11px; }
+    .like-button.liked { color: var(--red); background: #fff0f2; }
+    .question-form { padding: 15px 18px 18px; border-top: 1px solid var(--line); background: #fbfcfd; }
+    .context-chip { display: inline-flex; margin-bottom: 8px; padding: 5px 8px; border-radius: 6px; color: #315b8f; background: var(--blue-soft); font-size: 11px; font-weight: 750; }
+    .question-form textarea { width: 100%; min-height: 84px; resize: vertical; padding: 10px 11px; border: 1px solid #cfd7e2; border-radius: 8px; color: var(--ink); background: #fff; line-height: 1.45; }
+    .form-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 9px; }
+    .privacy-copy { max-width: 220px; color: var(--muted); font-size: 10px; line-height: 1.35; }
+    .submit-button { padding: 9px 15px; border: 0; border-radius: 8px; color: #fff; background: var(--blue); font-weight: 800; }
+    .submit-button:disabled { color: #98a2b3; background: #e4e7ec; cursor: not-allowed; }
+    .empty-state { padding: 24px 10px; color: #8490a1; text-align: center; font-size: 12px; }
+    .toast { position: fixed; z-index: 40; left: 50%; bottom: 24px; transform: translate(-50%, 12px); padding: 10px 14px; border-radius: 8px; color: #fff; background: #162235; box-shadow: var(--shadow); font-size: 12px; font-weight: 700; opacity: 0; pointer-events: none; transition: .18s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 220px; }
+      .workspace { padding: 14px; }
+      .slide-content { min-height: 390px; padding: 32px; }
+      .summary-cards { grid-template-columns: 1fr; }
+      .diagram { grid-template-columns: 1fr; }
+      .diagram-arrow { transform: rotate(90deg); text-align: center; }
+    }
+    @media (max-width: 680px) {
+      .role-caption, .progress-track, .sidebar { display: none; }
+      .role-button { min-width: 72px; }
+      .app-header { padding: 0 12px; }
+      .workspace { padding: 10px; }
+      .slide-title-bar { padding: 0 18px; }
+      .slide-content { min-height: 360px; padding: 25px 22px; }
+      .reader-toolbar { align-items: flex-start; flex-direction: column; }
+      .ask-button { width: 100%; justify-content: center; }
+      .question-card { grid-template-columns: 5px minmax(0,1fr); }
+      .question-card-actions { grid-column: 2; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">
+    <span class="demo-label">DEMO</span>
+    <div class="role-switch" aria-label="Chọn vai trò thử nghiệm">
+      <span class="role-caption">Xem như:</span>
+      <div class="role-options">
+        <button class="role-button active" id="studentRole" type="button" aria-pressed="true">Học viên</button>
+        <button class="role-button" id="instructorRole" type="button" aria-pressed="false">Giảng viên</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="breadcrumb">
+      <span class="back-icon" aria-hidden="true">‹</span>
+      <strong id="breadcrumbText">Bài 21 · Day10-data-pipeline-observability</strong>
+    </div>
+    <div class="header-status">
+      <span class="progress-label" id="progressLabel">1/7 bài</span>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="avatar" aria-label="Tài khoản P">P</div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" aria-label="Nội dung bài học">
+      <p class="sidebar-heading">NỘI DUNG BÀI HỌC</p>
+      <p class="module-label">Module 1</p>
+      <p class="slide-label">Slides</p>
+      <nav class="slide-nav" id="slideNav"></nav>
+      <div class="module-two">Module 2 — Lab 10<br>Data Pipeline &amp; Data Observability</div>
+    </aside>
+
+    <main class="workspace">
+      <section class="viewer" id="viewerSection">
+        <div class="question-context" id="questionContext" hidden>
+          <div class="context-copy">
+            <div class="context-label">CÂU HỎI ĐANG XỬ LÝ</div>
+            <p class="context-question" id="contextQuestion"></p>
+            <div class="context-meta" id="contextMeta"></div>
+          </div>
+          <div class="context-actions">
+            <button class="secondary-button" id="backToDashboard" type="button">← Bảng câu hỏi</button>
+            <button class="primary-button" id="markAnswered" type="button">Đánh dấu đã giải đáp</button>
+          </div>
+        </div>
+
+        <article class="slide-card" aria-live="polite">
+          <div class="slide-title-bar">
+            <h1 id="slideTitle"></h1>
+            <span class="brand-mark">✦ VINUNIVERSITY</span>
+          </div>
+          <div class="red-rule"></div>
+          <div class="slide-content" id="slideContent"></div>
+          <footer class="slide-footer">
+            <span>Giảng viên (VinUni)</span>
+            <span>AICB · Data Pipeline</span>
+            <span id="slideFooterNumber">2026 · 1/7</span>
+          </footer>
+        </article>
+
+        <div class="reader-toolbar">
+          <div class="toolbar-tools" aria-label="Công cụ đọc slide">
+            <span class="tool-pill active">◉ Đọc</span>
+            <span class="tool-pill">Bút</span>
+            <span class="tool-pill">Highlight</span>
+            <span class="tool-pill">Khoanh</span>
+            <span class="tool-pill">Tẩy</span>
+          </div>
+          <button class="ask-button" id="askButton" type="button" aria-expanded="false" aria-controls="questionDrawer">? Hỏi giảng viên</button>
+        </div>
+        <div class="filmstrip" id="filmstrip" aria-label="Danh sách slide"></div>
+      </section>
+
+      <section class="dashboard" id="dashboardSection" hidden>
+        <div class="dashboard-header">
+          <div>
+            <h1>Câu hỏi từ học viên</h1>
+            <p>Mở một câu hỏi để xem đúng slide và mốc kiến thức trước khi phản hồi.</p>
+          </div>
+        </div>
+        <div class="summary-cards" id="summaryCards"></div>
+        <div id="dashboardQuestions"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="question-drawer" id="questionDrawer" aria-label="Hỏi giảng viên" aria-hidden="true">
+    <div class="drawer-header">
+      <div>
+        <h2>Hỏi giảng viên</h2>
+        <p id="drawerContextText"></p>
+      </div>
+      <button class="icon-button" id="closeDrawer" type="button" aria-label="Đóng bảng hỏi">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="expectation-note">Câu hỏi được gắn với slide hiện tại và chuyển tới giảng viên. Hệ thống không tự tạo câu trả lời; trạng thái sẽ hiển thị rõ trong lúc bạn chờ phản hồi.</div>
+      <div class="drawer-question-list" id="drawerQuestionList"></div>
+    </div>
+    <form class="question-form" id="questionForm">
+      <span class="context-chip" id="contextChip"></span>
+      <textarea id="questionInput" maxlength="280" placeholder="Ví dụ: Data Pipeline khác ETL ở điểm nào?" aria-label="Nội dung câu hỏi"></textarea>
+      <div class="form-footer">
+        <span class="privacy-copy">Bạn kiểm soát nội dung gửi. Có thể đóng bảng hỏi để tiếp tục học bất kỳ lúc nào.</span>
+        <button class="submit-button" id="submitQuestion" type="submit" disabled>Gửi câu hỏi</button>
+      </div>
+    </form>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const slides = [
+        {
+          number: 1,
+          title: "Tổng Quan Data Pipeline",
+          bullets: [
+            "Data Pipeline là chuỗi các bước thu thập, biến đổi và chuyển dữ liệu từ nguồn đến nơi sử dụng.",
+            "Ba giai đoạn thường gặp: Extract, Transform và Load.",
+            "Thiết kế pipeline ảnh hưởng trực tiếp đến chất lượng dữ liệu cho hệ thống AI."
+          ]
+        },
+        {
+          number: 2,
+          title: "Các Thành Phần Trong Data Pipeline",
+          bullets: [
+            "Nguồn dữ liệu: database, API, file hoặc sự kiện streaming.",
+            "Tầng xử lý: làm sạch, chuẩn hoá và làm giàu dữ liệu.",
+            "Tầng lưu trữ: data warehouse, data lake hoặc vector store."
+          ]
+        },
+        {
+          number: 3,
+          title: "Batch và Streaming Pipeline",
+          bullets: [
+            "Batch xử lý dữ liệu theo lô tại các mốc thời gian định kỳ.",
+            "Streaming xử lý liên tục khi sự kiện phát sinh.",
+            "Nhiều hệ thống thực tế kết hợp cả hai mô hình."
+          ]
+        },
+        { number: 4, title: "Minh Hoạ ETL và ELT", diagram: ["Extract", "Transform", "Load"] },
+        {
+          number: 5,
+          title: "Data Observability Là Gì?",
+          bullets: [
+            "Theo dõi trạng thái và chất lượng dữ liệu trong toàn bộ pipeline.",
+            "Các tín hiệu gồm freshness, completeness, correctness, schema và lineage.",
+            "Giúp phát hiện lỗi dữ liệu trước khi ảnh hưởng đến hệ thống phía sau."
+          ]
+        },
+        {
+          number: 6,
+          title: "Các Chỉ Số Giám Sát Pipeline",
+          bullets: [
+            "Độ trễ xử lý và tỷ lệ lỗi.",
+            "Tính đầy đủ và tính nhất quán của schema.",
+            "Cảnh báo khi chỉ số vượt ngưỡng."
+          ]
+        },
+        {
+          number: 7,
+          title: "Xử Lý Sự Cố Trong Pipeline",
+          bullets: [
+            "Ghi log ở từng bước để truy vết nguyên nhân.",
+            "Thiết lập retry và dead-letter queue.",
+            "Rollback về phiên bản dữ liệu ổn định gần nhất."
+          ]
+        }
+      ];
+
+      const questions = [
+        {
+          id: 1,
+          text: "Data Pipeline khác ETL ở điểm nào ạ?",
+          slideNumber: 1,
+          milestoneId: 1,
+          author: "Học viên 3",
+          likes: 4,
+          liked: false,
+          answered: true,
+          answer: "Data Pipeline là toàn bộ luồng vận chuyển và xử lý dữ liệu; ETL là một cơ chế cụ thể có thể nằm trong pipeline."
+        },
+        {
+          id: 2,
+          text: "Với hệ thống nhỏ thì nên chọn batch hay streaming pipeline ạ?",
+          slideNumber: 3,
+          milestoneId: 1,
+          author: "Học viên 7",
+          likes: 1,
+          liked: false,
+          answered: false
+        },
+        {
+          id: 3,
+          text: "Data Observability có cần thiết lập riêng cho từng pipeline không thầy?",
+          slideNumber: 5,
+          milestoneId: 2,
+          author: "Học viên 5",
+          likes: 2,
+          liked: false,
+          answered: false
+        },
+        {
+          id: 4,
+          text: "Schema drift ảnh hưởng đến bước nào của pipeline?",
+          slideNumber: 6,
+          milestoneId: 2,
+          author: "Học viên 2",
+          likes: 5,
+          liked: false,
+          answered: true,
+          answer: "Schema drift thường làm hỏng bước Transform hoặc Load khi cấu trúc dữ liệu đầu vào không còn đúng như pipeline mong đợi."
+        }
+      ];
+
+      const state = {
+        role: "student",
+        slideNumber: 1,
+        instructorScreen: "dashboard",
+        activeQuestionId: null,
+        drawerOpen: false,
+        nextQuestionId: 5
+      };
+
+      const byId = (id) => document.getElementById(id);
+      const studentRole = byId("studentRole");
+      const instructorRole = byId("instructorRole");
+      const breadcrumbText = byId("breadcrumbText");
+      const progressLabel = byId("progressLabel");
+      const progressFill = byId("progressFill");
+      const slideNav = byId("slideNav");
+      const viewerSection = byId("viewerSection");
+      const dashboardSection = byId("dashboardSection");
+      const questionContext = byId("questionContext");
+      const contextQuestion = byId("contextQuestion");
+      const contextMeta = byId("contextMeta");
+      const markAnswered = byId("markAnswered");
+      const slideTitle = byId("slideTitle");
+      const slideContent = byId("slideContent");
+      const slideFooterNumber = byId("slideFooterNumber");
+      const askButton = byId("askButton");
+      const filmstrip = byId("filmstrip");
+      const summaryCards = byId("summaryCards");
+      const dashboardQuestions = byId("dashboardQuestions");
+      const questionDrawer = byId("questionDrawer");
+      const drawerScrim = byId("drawerScrim");
+      const drawerContextText = byId("drawerContextText");
+      const drawerQuestionList = byId("drawerQuestionList");
+      const questionForm = byId("questionForm");
+      const questionInput = byId("questionInput");
+      const submitQuestion = byId("submitQuestion");
+      const contextChip = byId("contextChip");
+      const toast = byId("toast");
+      let toastTimer;
+
+      const milestoneForSlide = (number) => number <= 4
+        ? { id: 1, name: "Data Pipeline Fundamentals" }
+        : { id: 2, name: "Data Observability" };
+
+      const escapeHTML = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add("show");
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      function setDrawer(open) {
+        state.drawerOpen = open && state.role === "student";
+        questionDrawer.classList.toggle("open", state.drawerOpen);
+        drawerScrim.classList.toggle("open", state.drawerOpen);
+        questionDrawer.setAttribute("aria-hidden", String(!state.drawerOpen));
+        askButton.setAttribute("aria-expanded", String(state.drawerOpen));
+        if (state.drawerOpen) setTimeout(() => questionInput.focus(), 180);
+      }
+
+      function setRole(role) {
+        state.role = role;
+        setDrawer(false);
+        if (role === "instructor") {
+          state.instructorScreen = "dashboard";
+          state.activeQuestionId = null;
+        }
+        render();
+      }
+
+      function setSlide(number) {
+        state.slideNumber = number;
+        render();
+      }
+
+      function renderRole() {
+        const isStudent = state.role === "student";
+        studentRole.classList.toggle("active", isStudent);
+        instructorRole.classList.toggle("active", !isStudent);
+        studentRole.setAttribute("aria-pressed", String(isStudent));
+        instructorRole.setAttribute("aria-pressed", String(!isStudent));
+      }
+
+      function renderHeader() {
+        const dashboardOpen = state.role === "instructor" && state.instructorScreen === "dashboard";
+        breadcrumbText.textContent = dashboardOpen
+          ? "Bài 21 · Bảng câu hỏi học viên"
+          : "Bài 21 · Day10-data-pipeline-observability";
+        progressLabel.textContent = dashboardOpen ? `${questions.length} câu hỏi` : `${state.slideNumber}/7 bài`;
+        progressFill.style.width = dashboardOpen ? "100%" : `${Math.round(state.slideNumber / slides.length * 100)}%`;
+      }
+
+      function renderNavigation() {
+        slideNav.innerHTML = slides.map((slide) => `
+          <button class="slide-nav-button ${slide.number === state.slideNumber ? "active" : ""}" type="button" data-slide="${slide.number}">
+            <span class="slide-dot">▶</span>
+            <span><span class="slide-name">${escapeHTML(slide.title)}</span><span class="slide-number">Slide ${slide.number}/7</span></span>
+          </button>
+        `).join("");
+        slideNav.querySelectorAll("[data-slide]").forEach((button) => {
+          button.addEventListener("click", () => {
+            state.instructorScreen = "viewer";
+            state.activeQuestionId = null;
+            setSlide(Number(button.dataset.slide));
+          });
+        });
+      }
+
+      function renderSlide() {
+        const slide = slides.find((item) => item.number === state.slideNumber) || slides[0];
+        slideTitle.textContent = slide.title;
+        slideFooterNumber.textContent = `2026 · ${slide.number}/7`;
+        if (slide.diagram) {
+          slideContent.innerHTML = `<div class="diagram">${slide.diagram.map((item, index) => `
+            ${index ? '<span class="diagram-arrow">→</span>' : ""}<div class="diagram-box">${escapeHTML(item)}</div>
+          `).join("")}</div>`;
+        } else {
+          slideContent.innerHTML = `<ul>${slide.bullets.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>`;
+        }
+        filmstrip.innerHTML = slides.map((item) => `
+          <button class="thumbnail ${item.number === state.slideNumber ? "active" : ""}" type="button" data-slide="${item.number}" aria-label="Mở slide ${item.number}"></button>
+        `).join("");
+        filmstrip.querySelectorAll("[data-slide]").forEach((button) => {
+          button.addEventListener("click", () => setSlide(Number(button.dataset.slide)));
+        });
+      }
+
+      function statusHTML(question) {
+        return question.answered
+          ? '<span class="status-pill answered">Đã giải đáp</span>'
+          : '<span class="status-pill waiting">Chưa giải đáp</span>';
+      }
+
+      function renderDrawer() {
+        const milestone = milestoneForSlide(state.slideNumber);
+        const relevant = questions
+          .filter((question) => question.milestoneId === milestone.id)
+          .sort((a, b) => b.id - a.id);
+        drawerContextText.textContent = `Slide ${state.slideNumber} · ${milestone.name}`;
+        contextChip.textContent = `Gắn với Slide ${state.slideNumber}`;
+        drawerQuestionList.innerHTML = relevant.length ? relevant.map((question) => `
+          <article class="drawer-question ${question.mine ? "mine" : ""}">
+            <div class="drawer-question-top">
+              <p>${escapeHTML(question.text)}</p>
+              ${statusHTML(question)}
+            </div>
+            ${question.answered && question.answer ? `<div class="answer-box"><strong>Giảng viên:</strong> ${escapeHTML(question.answer)}</div>` : ""}
+            <div class="drawer-question-footer">
+              <span>${escapeHTML(question.mine ? "Bạn" : question.author)} · Slide ${question.slideNumber}</span>
+              <button class="like-button ${question.liked ? "liked" : ""}" type="button" data-like="${question.id}">♥ ${question.likes}</button>
+            </div>
+          </article>
+        `).join("") : '<div class="empty-state">Chưa có câu hỏi nào ở mốc kiến thức này.</div>';
+        drawerQuestionList.querySelectorAll("[data-like]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const question = questions.find((item) => item.id === Number(button.dataset.like));
+            if (!question) return;
+            question.likes += question.liked ? -1 : 1;
+            question.liked = !question.liked;
+            renderDrawer();
+          });
+        });
+      }
+
+      function openQuestion(questionId) {
+        const question = questions.find((item) => item.id === questionId);
+        if (!question) return;
+        state.role = "instructor";
+        state.instructorScreen = "viewer";
+        state.activeQuestionId = questionId;
+        state.slideNumber = question.slideNumber;
+        render();
+      }
+
+      function renderDashboard() {
+        const unanswered = questions.filter((question) => !question.answered).length;
+        const answered = questions.length - unanswered;
+        summaryCards.innerHTML = `
+          <div class="summary-card"><strong>${questions.length}</strong><span>Tổng câu hỏi</span></div>
+          <div class="summary-card"><strong>${unanswered}</strong><span>Đang chờ giải đáp</span></div>
+          <div class="summary-card"><strong>${answered}</strong><span>Đã giải đáp</span></div>
+        `;
+        dashboardQuestions.innerHTML = [1, 2].map((milestoneId) => {
+          const milestoneQuestions = questions.filter((question) => question.milestoneId === milestoneId);
+          const name = milestoneId === 1 ? "Data Pipeline Fundamentals" : "Data Observability";
+          return `
+            <section class="milestone-section">
+              <h2 class="milestone-title"><span class="milestone-badge">Mốc ${milestoneId}</span>${name}</h2>
+              <div class="question-list">
+                ${milestoneQuestions.map((question) => `
+                  <article class="question-card ${question.answered ? "answered" : ""}">
+                    <span class="question-accent"></span>
+                    <div>
+                      <p class="question-text">${escapeHTML(question.text)}</p>
+                      <div class="question-meta"><span>${escapeHTML(question.mine ? "Bạn" : question.author)}</span><span>Slide ${question.slideNumber}</span><span>♥ ${question.likes}</span></div>
+                    </div>
+                    <div class="question-card-actions">
+                      ${statusHTML(question)}
+                      <button class="small-button" type="button" data-open-question="${question.id}">Mở ngữ cảnh</button>
+                    </div>
+                  </article>
+                `).join("")}
+              </div>
+            </section>
+          `;
+        }).join("");
+        dashboardQuestions.querySelectorAll("[data-open-question]").forEach((button) => {
+          button.addEventListener("click", () => openQuestion(Number(button.dataset.openQuestion)));
+        });
+      }
+
+      function renderContext() {
+        const question = questions.find((item) => item.id === state.activeQuestionId);
+        const visible = state.role === "instructor" && state.instructorScreen === "viewer" && Boolean(question);
+        questionContext.hidden = !visible;
+        if (!visible) return;
+        contextQuestion.textContent = question.text;
+        contextMeta.textContent = `${question.author} · Slide ${question.slideNumber} · ${milestoneForSlide(question.slideNumber).name}`;
+        markAnswered.disabled = question.answered;
+        markAnswered.textContent = question.answered ? "Đã giải đáp" : "Đánh dấu đã giải đáp";
+      }
+
+      function renderMain() {
+        const dashboardOpen = state.role === "instructor" && state.instructorScreen === "dashboard";
+        dashboardSection.hidden = !dashboardOpen;
+        viewerSection.hidden = dashboardOpen;
+        askButton.hidden = state.role !== "student";
+        if (dashboardOpen) renderDashboard();
+        else {
+          renderSlide();
+          renderContext();
+        }
+      }
+
+      function render() {
+        renderRole();
+        renderHeader();
+        renderNavigation();
+        renderMain();
+        renderDrawer();
+      }
+
+      studentRole.addEventListener("click", () => setRole("student"));
+      instructorRole.addEventListener("click", () => setRole("instructor"));
+      askButton.addEventListener("click", () => setDrawer(!state.drawerOpen));
+      byId("closeDrawer").addEventListener("click", () => setDrawer(false));
+      drawerScrim.addEventListener("click", () => setDrawer(false));
+      byId("backToDashboard").addEventListener("click", () => {
+        state.instructorScreen = "dashboard";
+        state.activeQuestionId = null;
+        render();
+      });
+      markAnswered.addEventListener("click", () => {
+        const question = questions.find((item) => item.id === state.activeQuestionId);
+        if (!question || question.answered) return;
+        question.answered = true;
+        question.answer = "Giảng viên đã giải đáp câu hỏi này trong ngữ cảnh slide hiện tại.";
+        render();
+        showToast("Đã cập nhật trạng thái: Đã giải đáp");
+      });
+      questionInput.addEventListener("input", () => {
+        submitQuestion.disabled = !questionInput.value.trim();
+      });
+      questionForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const text = questionInput.value.trim();
+        if (!text) return;
+        const milestone = milestoneForSlide(state.slideNumber);
+        questions.push({
+          id: state.nextQuestionId++,
+          text,
+          slideNumber: state.slideNumber,
+          milestoneId: milestone.id,
+          author: "Bạn",
+          likes: 0,
+          liked: false,
+          answered: false,
+          mine: true
+        });
+        questionInput.value = "";
+        submitQuestion.disabled = true;
+        renderDrawer();
+        renderHeader();
+        showToast("Đã gửi câu hỏi · Đang chờ giảng viên");
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && state.drawerOpen) setDrawer(false);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

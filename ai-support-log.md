@@ -2,7 +2,7 @@
 
 Tôi phụ trách hiện thực hóa Option C dưới dạng một micro-prototype HTML đặt trong giao diện đọc slide giống VLearn. Tôi tự dựng bản HTML ban đầu, chuẩn bị dữ liệu mô phỏng và viết nội dung giải thích sao cho nối lại với các thuật ngữ đang xuất hiện trên slide. AI được dùng để rà soát và chỉnh code HTML/CSS/JavaScript cho chỉn chu, thống nhất và dễ thao tác hơn. Prototype không gọi model hoặc API và không sử dụng dữ liệu thật của học viên.
 
-**Artifact hiện tại:** [Option C — Khái niệm nền và chẩn đoán nhanh](prototype/Option%20C.html)
+**Artifact hiện tại:** [Option C — Khái niệm nền và chẩn đoán nhanh](prototypes/Option%20C.html)
 
 ## Prompt tổng hợp dùng cho phiên bản hiện tại
 
@@ -66,9 +66,3 @@ Tôi tách rõ nội dung đã duyệt và nội dung AI tạm giải thích. Th
 Tôi đổi tín hiệu chính từ số lượt mở popup sang kết quả Strong/Weak của bài kiểm tra. Dữ liệu giảng viên nhìn thấy chỉ là số lượng và tỷ lệ tổng hợp. Trong logic mẫu, một kết quả mới thay thế kết quả cũ của cùng học viên và ngưỡng đề xuất là hơn 50% Weak. Tuy nhiên, ngưỡng chỉ giúp AI sắp xếp ưu tiên; giảng viên vẫn phải kiểm chứng, chỉnh sửa nếu cần, duyệt và phát hành.
 
 Tôi cũng tách nút test luồng giảng viên khỏi khu vực chức năng của học viên. Bên dưới slide chỉ còn hai nút bằng nhau là “Khái niệm nền” và “Vẫn chưa hiểu !?”. Nút giảng viên được chuyển lên header và có nhãn “TEST” để thể hiện đúng vai trò trong micro-prototype.
-
-## Điều vẫn chưa được chứng minh
-
-Prototype mới chỉ dùng canned output và dữ liệu lớp mô phỏng. Tôi chưa thể kết luận ba câu hỏi có xác định đúng lỗ hổng kiến thức hay không, ngưỡng hơn 50% có phù hợp cho mọi lớp hay không, hoặc giảng viên có chấp nhận thêm bước kiểm chứng và phát hành hay không. Tôi cũng chưa biết panel kiểm tra có khiến học viên bỏ lỡ thêm nội dung giảng hay phần giải thích Weak có đủ ngắn để họ quay lại bài kịp thời.
-
-Những điểm trên cần được quan sát khi tester trải nghiệm cả ba Option A/B/C trong cùng context và task. Log này không chứa quote, observation hoặc feedback tester vì nhóm chưa cung cấp evidence test thật cho các nội dung đó.
