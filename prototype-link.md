@@ -6,9 +6,9 @@ Ba prototype cùng giải quyết một vấn đề: **giúp học viên xử l�
 
 | Phương án | Cơ chế chính | Luồng trải nghiệm | Liên kết |
 |:---:|---|---|:---:|
-| **A** | Hỏi giảng viên theo ngữ cảnh | Học viên gửi câu hỏi tại slide đang xem → giảng viên mở đúng ngữ cảnh → cập nhật trạng thái giải đáp. | **[Mở Option A](prototypes/Option%20A.html)** |
-| **B** | Sơ đồ kiến thức | Học viên mở bản đồ khái niệm → chọn nhánh kiến thức → xem nội dung và tài liệu liên quan. | **[Mở Option B](prototypes/Option%20B.html)** |
-| **C** | Khái niệm nền và chẩn đoán nhanh | Học viên mở giải thích theo ngữ cảnh → làm kiểm tra ngắn khi cần → quay lại bài giảng. | **[Mở Option C](prototypes/Option%20C.html)** |
+| **A** | Hỏi giảng viên theo ngữ cảnh | Học viên gửi câu hỏi tại slide đang xem → giảng viên mở đúng ngữ cảnh → cập nhật trạng thái giải đáp. | **[Mở Option A trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20A.html)** |
+| **B** | Sơ đồ kiến thức | Học viên mở bản đồ khái niệm → chọn nhánh kiến thức → xem nội dung và tài liệu liên quan. | **[Mở Option B trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20B.html)** |
+| **C** | Khái niệm nền và chẩn đoán nhanh | Học viên mở giải thích theo ngữ cảnh → làm kiểm tra ngắn khi cần → quay lại bài giảng. | **[Mở Option C trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html)** |
 
 ## Prototype cá nhân
 
@@ -16,7 +16,7 @@ Ba prototype cùng giải quyết một vấn đề: **giúp học viên xử l�
 |---|---|
 | **Người phụ trách** | Tạ Thị Thu Huyền |
 | **Phương án** | Option C — Khái niệm nền và chẩn đoán nhanh |
-| **Prototype** | **[Mở trang Option C](prototypes/Option%20C.html)** |
+| **Prototype** | **[Mở trang Option C trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html)** |
 | **Cập nhật gần nhất** | 19/08/2026 |
 
-> Mỗi liên kết mở một file HTML độc lập trong thư mục `prototypes/`.
+> Mỗi liên kết mở trực tiếp prototype đã deploy trên GitHub Pages; không cần tải file HTML về máy.

@@ -51,9 +51,9 @@ Học viên tự viết câu hỏi          AI lập bản đồ, user chọn đ
 
 | Option | Prototype | Người phụ trách |
 |---|---|---|
-| A | [Student–Instructor Prototype](prototypes/Option%20A.html) | Đỗ Thu Liễu, Nguyễn Trí Trung |
-| B | [Knowledge Map Prototype](prototypes/Option%20B.html) | Phạm Tiến Đại |
-| C | [Foundational Concept Prototype](prototypes/Option%20C.html) | Tạ Thị Thu Huyền |
+| A | [Student–Instructor Prototype](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20A.html) | Đỗ Thu Liễu, Nguyễn Trí Trung |
+| B | [Knowledge Map Prototype](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20B.html) | Phạm Tiến Đại |
+| C | [Foundational Concept Prototype](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html) | Tạ Thị Thu Huyền |
 
 ## 7. Giả định cần test
 

@@ -5,7 +5,7 @@
 - **Người facilitate:** Tạ Thị Thu Huyền
 - **Tester/context:** Phạm Hải Yến — học viên đang xem slide **Data Observability** trên VLearn, gặp thuật ngữ **Data Pipeline** chưa hiểu trong khi bài giảng vẫn tiếp tục.
 - **Thời gian:** 19/08/2026
-- **Các prototype được so sánh:** [Option A — Hỏi giảng viên theo ngữ cảnh](prototypes/Option%20A.html), [Option B — Sơ đồ kiến thức](prototypes/Option%20B.html) và [Option C — Khái niệm nền và chẩn đoán nhanh](prototypes/Option%20C.html).
+- **Các prototype được so sánh:** [Option A — Hỏi giảng viên theo ngữ cảnh](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20A.html), [Option B — Sơ đồ kiến thức](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20B.html) và [Option C — Khái niệm nền và chẩn đoán nhanh](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html).
 - **Task được giao:** Với cùng một tình huống và thuật ngữ **Data Pipeline**, thử từng option để tìm phần hỗ trợ phù hợp, xác định chỗ mình còn vướng và quay lại slide mà không mở Chat/Google.
 - **Thứ tự test:** A → B → C.
 

@@ -25,9 +25,9 @@ Nhóm tiếp tục case từ Day 17: hỗ trợ học viên xác định phần 
 
 | Option | Mô tả ngắn | Prototype |
 |---|---|---|
-| **A — Hỏi giảng viên theo ngữ cảnh** | Học viên tự viết câu hỏi ngay trong bài. Hệ thống gắn câu hỏi với slide và mốc kiến thức; giảng viên xem, mở đúng ngữ cảnh và cập nhật trạng thái đã/chưa giải đáp. | [Mở Option A](prototypes/Option%20A.html) |
-| **B — Sơ đồ kiến thức** | AI tổ chức nội dung bài thành bản đồ khái niệm. Học viên chọn nhánh, xem phạm vi slide, kiến thức liên quan và tài liệu để tự xác định vùng kiến thức đang thiếu. | [Mở Option B](prototypes/Option%20B.html) |
-| **C — Khái niệm nền và chẩn đoán nhanh** | AI giải thích thuật ngữ theo ngữ cảnh slide và cung cấp bài kiểm tra ngắn để xác định khái niệm Strong/Weak. Kết quả được tổng hợp ẩn danh; giảng viên kiểm chứng, chỉnh sửa và duyệt tag trước khi phát hành. | [Mở Option C](prototypes/Option%20C.html) |
+| **A — Hỏi giảng viên theo ngữ cảnh** | Học viên tự viết câu hỏi ngay trong bài. Hệ thống gắn câu hỏi với slide và mốc kiến thức; giảng viên xem, mở đúng ngữ cảnh và cập nhật trạng thái đã/chưa giải đáp. | [Mở Option A trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20A.html) |
+| **B — Sơ đồ kiến thức** | AI tổ chức nội dung bài thành bản đồ khái niệm. Học viên chọn nhánh, xem phạm vi slide, kiến thức liên quan và tài liệu để tự xác định vùng kiến thức đang thiếu. | [Mở Option B trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20B.html) |
+| **C — Khái niệm nền và chẩn đoán nhanh** | AI giải thích thuật ngữ theo ngữ cảnh slide và cung cấp bài kiểm tra ngắn để xác định khái niệm Strong/Weak. Kết quả được tổng hợp ẩn danh; giảng viên kiểm chứng, chỉnh sửa và duyệt tag trước khi phát hành. | [Mở Option C trên GitHub Pages](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html) |
 
 Ba option nằm trên một spectrum phân chia vai trò:
 

@@ -2,7 +2,7 @@
 
 Tôi phụ trách hiện thực hóa Option C dưới dạng một micro-prototype HTML đặt trong giao diện đọc slide giống VLearn. Tôi tự dựng bản HTML ban đầu, chuẩn bị dữ liệu mô phỏng và viết nội dung giải thích sao cho nối lại với các thuật ngữ đang xuất hiện trên slide. AI được dùng để rà soát và chỉnh code HTML/CSS/JavaScript cho chỉn chu, thống nhất và dễ thao tác hơn. Prototype không gọi model hoặc API và không sử dụng dữ liệu thật của học viên.
 
-**Artifact hiện tại:** [Option C — Khái niệm nền và chẩn đoán nhanh](prototypes/Option%20C.html)
+**Artifact hiện tại:** [Option C — Khái niệm nền và chẩn đoán nhanh](https://imhuynf.github.io/Track01-DAY18-2A202601782-TaThiThuHuyen/prototypes/Option%20C.html)
 
 ## Prompt tổng hợp dùng cho phiên bản hiện tại
 
