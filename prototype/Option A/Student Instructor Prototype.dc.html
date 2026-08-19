@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes toastIn { from{opacity:0; transform:translate(-50%,10px);} to{opacity:1; transform:translate(-50%,0);} }
+body{margin:0;}
+</style>
+</helmet>
+<div style="width:100%;height:100vh;overflow:hidden;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#f3f4f6;color:#111827;box-sizing:border-box;">
+
+  <div style="height:38px;flex-shrink:0;background:#111827;border-bottom:1px dashed rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-sizing:border-box;">
+    <span style="font-size:10px;font-weight:700;letter-spacing:0.06em;color:#111827;background:#f59e0b;padding:3px 8px;border-radius:4px;">DEMO</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:12px;color:rgba(255,255,255,0.55);">Xem như:</span>
+      <div style="display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:3px;gap:2px;">
+        <button type="button" onClick="{{ setStudent }}" style="padding:5px 14px;border-radius:999px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:{{ studentToggleBg }};color:{{ studentToggleColor }};">Học viên</button>
+        <button type="button" onClick="{{ setInstructor }}" style="padding:5px 14px;border-radius:999px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:{{ instructorToggleBg }};color:{{ instructorToggleColor }};">Giảng viên</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:60px;flex-shrink:0;background:#ffffff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-sizing:border-box;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span style="font-size:15px;font-weight:600;color:#111827;">{{ headerBreadcrumb }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span style="font-size:13px;color:#6b7280;font-weight:500;">{{ headerProgressLabel }}</span>
+      <sc-if value="{{ showViewerArea }}" hint-placeholder-val="{{ true }}">
+        <div style="width:110px;height:6px;background:#e5e7eb;border-radius:999px;overflow:hidden;">
+          <div style="height:100%;background:#2563eb;border-radius:999px;width:{{ progressPercent }}%;"></div>
+        </div>
+      </sc-if>
+      <div style="width:30px;height:30px;border-radius:999px;background:#eaf2ff;display:flex;align-items:center;justify-content:center;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#2563eb"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+      </div>
+      <div style="width:32px;height:32px;border-radius:999px;background:#1c3a5e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">P</div>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;display:flex;overflow:hidden;">
+
+    <sc-if value="{{ showDashboard }}" hint-placeholder-val="{{ false }}">
+    <div style="width:260px;flex-shrink:0;background:#ffffff;border-right:1px solid #e5e7eb;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:#6b7280;">BẢNG CÂU HỎI</span>
+        <span style="font-size:16px;color:#9ca3af;cursor:pointer;">×</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:#eaf2ff;">
+          <div style="width:8px;height:8px;border-radius:999px;background:#2563eb;flex-shrink:0;"></div>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:13px;font-weight:600;color:#111827;">Mốc 1: Data Pipeline Fundamentals</span>
+            <span style="font-size:11px;color:#6b7280;">{{ milestone1Questions.length }} câu hỏi</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;">
+          <div style="width:8px;height:8px;border-radius:999px;background:#2563eb;flex-shrink:0;"></div>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:13px;font-weight:600;color:#111827;">Mốc 2: Data Observability</span>
+            <span style="font-size:11px;color:#6b7280;">{{ milestone2Questions.length }} câu hỏi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;overflow:auto;padding:32px;box-sizing:border-box;">
+      <h1 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#111827;">Câu hỏi từ học viên</h1>
+      <p style="margin:0 0 28px;font-size:13px;color:#6b7280;">Theo dõi và giải đáp câu hỏi theo từng mốc kiến thức</p>
+
+      <div style="margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="background:#1c3a5e;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">Mốc 1</span>
+          <span style="font-size:15px;font-weight:700;color:#111827;">Data Pipeline Fundamentals</span>
+        </div>
+        <sc-if value="{{ milestone1Empty }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed #d1d5db;border-radius:10px;padding:28px;text-align:center;color:#9ca3af;font-size:13px;font-style:italic;">Chưa có câu hỏi nào ở mốc này</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ milestone1Questions }}" as="q" hint-placeholder-count="2">
+            <div onClick="{{ q.onOpen }}" style="display:flex;gap:12px;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;cursor:pointer;">
+              <div style="width:4px;border-radius:4px;background:{{ q.accentColor }};flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                  <span style="font-size:12px;color:#6b7280;font-weight:600;">{{ q.authorLabel }}</span>
+                  <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="{{ q.likeColor }}"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 3.5 0 6 3.5 4 7.5C19 16.65 12 21 12 21z"/></svg>
+                    <span style="font-size:12px;color:#6b7280;font-weight:600;">{{ q.likes }}</span>
+                  </div>
+                </div>
+                <p style="margin:6px 0;font-size:14px;color:#111827;line-height:1.4;">{{ q.text }}</p>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:11px;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:999px;">Slide {{ q.slideNumber }}</span>
+                  <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:{{ q.statusBg }};color:{{ q.statusColor }};">{{ q.statusLabel }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="background:#1c3a5e;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;">Mốc 2</span>
+          <span style="font-size:15px;font-weight:700;color:#111827;">Data Observability</span>
+        </div>
+        <sc-if value="{{ milestone2Empty }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed #d1d5db;border-radius:10px;padding:28px;text-align:center;color:#9ca3af;font-size:13px;font-style:italic;">Chưa có câu hỏi nào ở mốc này</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ milestone2Questions }}" as="q" hint-placeholder-count="2">
+            <div onClick="{{ q.onOpen }}" style="display:flex;gap:12px;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;cursor:pointer;">
+              <div style="width:4px;border-radius:4px;background:{{ q.accentColor }};flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                  <span style="font-size:12px;color:#6b7280;font-weight:600;">{{ q.authorLabel }}</span>
+                  <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="{{ q.likeColor }}"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 3.5 0 6 3.5 4 7.5C19 16.65 12 21 12 21z"/></svg>
+                    <span style="font-size:12px;color:#6b7280;font-weight:600;">{{ q.likes }}</span>
+                  </div>
+                </div>
+                <p style="margin:6px 0;font-size:14px;color:#111827;line-height:1.4;">{{ q.text }}</p>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:11px;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:999px;">Slide {{ q.slideNumber }}</span>
+                  <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:{{ q.statusBg }};color:{{ q.statusColor }};">{{ q.statusLabel }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showViewerArea }}" hint-placeholder-val="{{ true }}">
+    <div style="width:{{ sidebarWidth }}px;flex-shrink:0;background:#ffffff;border-right:1px solid #e5e7eb;padding:{{ sidebarPadding }};box-sizing:border-box;display:flex;flex-direction:column;gap:16px;overflow:hidden;transition:width .2s ease;">
+      <sc-if value="{{ sidebarCollapsed }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ toggleSidebar }}" title="Mở rộng" style="width:100%;border:none;background:none;cursor:pointer;display:flex;justify-content:center;padding:4px 0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </sc-if>
+      <sc-if value="{{ sidebarExpanded }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:#6b7280;">NỘI DUNG BÀI HỌC</span>
+        <span onClick="{{ toggleSidebar }}" title="Thu nhỏ" style="font-size:14px;color:#9ca3af;cursor:pointer;">‹</span>
+      </div>
+      <div style="overflow:auto;">
+        <div style="font-size:11px;color:#9ca3af;font-weight:600;margin-bottom:4px;">Module 1</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:14px;font-weight:700;color:#111827;">Slides</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <sc-for list="{{ sidebarItems }}" as="item" hint-placeholder-count="7">
+            <div onClick="{{ item.onClick }}" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;background:{{ item.rowBg }};">
+              <div style="width:20px;height:20px;border-radius:999px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:{{ item.iconBg }};border:1.5px solid {{ item.iconBorder }};">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="{{ item.iconColor }}"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <div style="min-width:0;">
+                <div style="font-size:13px;color:#111827;font-weight:{{ item.titleWeight }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ item.title }}</div>
+                <div style="font-size:11px;color:#9ca3af;">Slide {{ item.number }}/7</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 4px;border-top:1px solid #f3f4f6;padding-top:14px;">
+        <span style="font-size:12px;color:#9ca3af;">Module 2 — Lab 10 – Data Pipeline &amp; Data Observability</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
+      </sc-if>
+    </div>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:20px 20px 14px;box-sizing:border-box;position:relative;overflow:hidden;">
+
+      <sc-if value="{{ showQuestionBanner }}" hint-placeholder-val="{{ false }}">
+        <div style="flex-shrink:0;display:flex;align-items:flex-start;gap:14px;background:#eaf2ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px;box-sizing:border-box;">
+          <button type="button" onClick="{{ exitToFeed }}" title="Quay lại bảng câu hỏi" style="flex-shrink:0;border:1px solid #bfdbfe;background:#ffffff;color:#2563eb;font-size:20px;font-weight:700;cursor:pointer;width:38px;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">←</button>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#ffffff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;box-sizing:border-box;">
+              <p style="margin:0;font-size:17px;font-weight:600;color:#111827;line-height:1.45;text-align:center;">"{{ activeQuestion.text }}"</p>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+              <sc-if value="{{ activeQuestion.hasLikes }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="#dc2626"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 3.5 0 6 3.5 4 7.5C19 16.65 12 21 12 21z"/></svg>
+                  <span style="font-size:13px;color:#374151;font-weight:600;">{{ activeQuestion.likes }} học viên khác cũng có câu hỏi này</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ activeQuestion.answered }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:12px;font-weight:600;color:#15803d;background:#dcfce7;padding:6px 12px;border-radius:999px;">✅ Đã giải đáp trên lớp</span>
+              </sc-if>
+              <sc-if value="{{ activeQuestion.answeredNot }}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{ markAnswered }}" style="border:none;background:#16a34a;color:#fff;font-size:12px;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;">✅ Đánh dấu đã giải đáp trên lớp</button>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden;">
+        <div style="flex-shrink:0;background:#1c3a5e;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;">
+          <div>
+            <div style="color:#fff;font-size:21px;font-weight:700;">{{ activeSlideData.title }}</div>
+            <div style="width:56px;height:3px;background:#dc2626;border-radius:2px;margin-top:8px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:5px 12px;border-radius:999px;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+            <span style="color:#fff;font-size:11px;font-weight:600;letter-spacing:0.02em;">VINUNIVERSITY</span>
+          </div>
+        </div>
+
+        <div style="flex:1;overflow:auto;padding:30px 34px;box-sizing:border-box;">
+          <sc-if value="{{ isDiagramSlide }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex;gap:48px;justify-content:center;margin-bottom:26px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="font-size:14px;font-weight:700;color:#1c3a5e;margin-bottom:10px;">ETL flow</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#eef2f7;border:1px solid #cbd5e1;color:#1c3a5e;font-weight:600;font-size:13px;">Sources</div>
+                  <div style="color:#9ca3af;font-size:14px;line-height:1;margin:4px 0;">↓</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#eef2f7;border:1px solid #cbd5e1;color:#1c3a5e;font-weight:600;font-size:13px;text-align:center;">Transform<br/>clean + mask</div>
+                  <div style="color:#9ca3af;font-size:14px;line-height:1;margin:4px 0;">↓</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#eef2f7;border:1px solid #cbd5e1;color:#1c3a5e;font-weight:600;font-size:13px;text-align:center;">Load<br/>warehouse / store</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="font-size:14px;font-weight:700;color:#7c2d2d;margin-bottom:10px;">ELT flow</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#fdecec;border:1px solid #f3b4b4;color:#7c2d2d;font-weight:600;font-size:13px;">Sources</div>
+                  <div style="color:#e5a5a5;font-size:14px;line-height:1;margin:4px 0;">↓</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#fdecec;border:1px solid #f3b4b4;color:#7c2d2d;font-weight:600;font-size:13px;text-align:center;">Load Raw<br/>lake / bronze</div>
+                  <div style="color:#e5a5a5;font-size:14px;line-height:1;margin:4px 0;">↓</div>
+                  <div style="padding:9px 22px;border-radius:6px;background:#fdecec;border:1px solid #f3b4b4;color:#7c2d2d;font-weight:600;font-size:13px;text-align:center;">Transform<br/>chunk + enrich</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:48px;justify-content:center;">
+                <ul style="margin:0;padding-left:18px;max-width:340px;color:#374151;font-size:14px;line-height:1.6;">
+                  <li>Dùng khi cần <strong>lọc/ràng buộc trước</strong> khi lưu</li>
+                  <li>Hợp với data nhạy cảm, dữ liệu production cho agent</li>
+                  <li>Ví dụ: redact PII rồi mới tạo embeddings</li>
+                </ul>
+                <ul style="margin:0;padding-left:18px;max-width:340px;color:#374151;font-size:14px;line-height:1.6;">
+                  <li>Dùng khi cần <strong>giữ raw</strong> để replay, backfill, thử nghiệm</li>
+                  <li>Hợp với RAG/ML có nhiều nguồn và logic transform thay đổi liên tục</li>
+                  <li>Ví dụ: lưu raw docs trước, sau đó thử nhiều chiến lược chunking</li>
+                </ul>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isDiagramSlide }}" hint-placeholder-val="{{ false }}">
+          </sc-if>
+          <sc-if value="{{ isBulletSlide }}" hint-placeholder-val="{{ true }}">
+            <ul style="margin:0;padding-left:20px;color:#374151;font-size:16px;line-height:2;max-width:640px;">
+              <sc-for list="{{ slideBullets }}" as="b" hint-placeholder-count="3">
+                <li>{{ b }}</li>
+              </sc-for>
+            </ul>
+          </sc-if>
+        </div>
+
+        <div style="flex-shrink:0;display:flex;height:28px;">
+          <div style="flex:1;background:#1c3a5e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;">Giảng viên (VinUni)</div>
+          <div style="flex:1;background:#35597e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;">AICB · Data Pipeline</div>
+          <div style="flex:1;background:#6685a3;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;">2026&nbsp;&nbsp;{{ activeSlideNumber }}/7</div>
+        </div>
+
+        <sc-if value="{{ showFabButton }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ toggleDrawer }}" style="position:absolute;right:36px;bottom:44px;width:52px;height:52px;border-radius:999px;background:#1c3a5e;color:#fff;font-size:22px;font-weight:700;border:none;box-shadow:0 4px 14px rgba(0,0,0,0.28);cursor:pointer;z-index:5;">?</button>
+        </sc-if>
+      </div>
+
+      <div style="flex-shrink:0;height:46px;background:#ffffff;border:1px solid #e5e7eb;border-radius:999px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-sizing:border-box;gap:6px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="width:26px;height:26px;border-radius:999px;background:#1c3a5e;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+          </div>
+          <span style="font-size:12px;font-weight:600;color:#2563eb;background:#eaf2ff;padding:6px 10px;border-radius:999px;">Đọc</span>
+          <span style="font-size:12px;color:#6b7280;padding:6px 10px;border-radius:999px;cursor:pointer;">Bút</span>
+          <span style="font-size:12px;color:#6b7280;padding:6px 10px;border-radius:999px;cursor:pointer;">Highlight</span>
+          <span style="font-size:12px;color:#6b7280;padding:6px 10px;border-radius:999px;cursor:pointer;">Khoanh</span>
+          <span style="font-size:12px;color:#6b7280;padding:6px 10px;border-radius:999px;cursor:pointer;">Tẩy</span>
+          <span style="font-size:14px;color:#9ca3af;padding:0 4px;cursor:pointer;">💡</span>
+          <span style="font-size:14px;color:#9ca3af;padding:0 4px;cursor:pointer;">···</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;color:#6b7280;cursor:pointer;">Từng trang</span>
+          <span style="font-size:12px;color:#6b7280;cursor:pointer;">Cuộn đọc</span>
+          <div style="width:1px;height:16px;background:#e5e7eb;"></div>
+          <span style="font-size:13px;color:#9ca3af;cursor:pointer;">−</span>
+          <span style="font-size:12px;color:#374151;">100%</span>
+          <span style="font-size:13px;color:#9ca3af;cursor:pointer;">+</span>
+          <div style="width:1px;height:16px;background:#e5e7eb;"></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" style="cursor:pointer;"><path d="M3 10a7 7 0 0113-3M21 14a7 7 0 01-13 3"/><path d="M3 4v6h6M21 20v-6h-6"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" style="cursor:pointer;"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" style="cursor:pointer;"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </div>
+      </div>
+
+      <div style="flex-shrink:0;height:70px;background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;display:flex;align-items:center;gap:8px;padding:8px 12px;box-sizing:border-box;overflow-x:auto;">
+        <span style="font-size:16px;color:#9ca3af;cursor:pointer;flex-shrink:0;">‹</span>
+        <sc-for list="{{ filmstripItems }}" as="item" hint-placeholder-count="7">
+          <div onClick="{{ item.onClick }}" style="width:60px;height:46px;border-radius:8px;overflow:hidden;flex-shrink:0;cursor:pointer;position:relative;background:#fff;border:{{ item.border }};box-sizing:border-box;">
+            <div style="height:9px;background:#1c3a5e;"></div>
+            <div style="padding:4px;display:flex;flex-direction:column;gap:2px;">
+              <div style="height:2px;background:#e5e7eb;border-radius:1px;width:80%;"></div>
+              <div style="height:2px;background:#e5e7eb;border-radius:1px;width:60%;"></div>
+            </div>
+            <div style="position:absolute;left:3px;bottom:3px;width:14px;height:14px;border-radius:999px;background:#1c3a5e;color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ item.number }}</div>
+          </div>
+        </sc-for>
+        <span style="font-size:16px;color:#9ca3af;cursor:pointer;flex-shrink:0;">›</span>
+      </div>
+    </div>
+
+    <div style="width:{{ drawerWidth }}px;flex-shrink:0;overflow:hidden;transition:width .28s ease;background:#ffffff;border-left:{{ drawerBorder }};display:flex;flex-direction:column;box-sizing:border-box;">
+      <div style="width:380px;min-width:380px;height:100%;display:flex;flex-direction:column;padding:20px;box-sizing:border-box;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+          <span style="font-size:17px;font-weight:700;color:#111827;">Đặt câu hỏi</span>
+          <span onClick="{{ toggleDrawer }}" style="font-size:18px;color:#9ca3af;cursor:pointer;">×</span>
+        </div>
+        <p style="margin:6px 0 16px;font-size:12px;color:#6b7280;flex-shrink:0;">Câu hỏi sẽ gắn theo Slide {{ studentSlide }}</p>
+        <textarea value="{{ draftText }}" onChange="{{ onDraftChange }}" placeholder="Nhập câu hỏi của bạn..." style="width:100%;min-height:84px;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:14px;font-family:inherit;box-sizing:border-box;resize:vertical;flex-shrink:0;"></textarea>
+        <button type="button" disabled="{{ submitDisabled }}" onClick="{{ submitQuestion }}" style="margin-top:10px;width:100%;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:600;background:{{ submitBg }};color:{{ submitColor }};cursor:{{ submitCursor }};flex-shrink:0;">Gửi</button>
+
+        <div style="border-top:1px solid #f3f4f6;margin:18px 0 12px;flex-shrink:0;"></div>
+        <div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:0.03em;margin-bottom:10px;flex-shrink:0;">CÂU HỎI KHÁC · MỐC {{ currentMilestone.id }}: {{ currentMilestone.name }}</div>
+
+        <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;">
+          <sc-if value="{{ drawerEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;color:#9ca3af;font-size:13px;font-style:italic;padding:20px 0;">Chưa có câu hỏi nào ở mốc này</div>
+          </sc-if>
+          <sc-for list="{{ drawerQuestions }}" as="q" hint-placeholder-count="2">
+            <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:{{ q.cardBg }};">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:12px;font-weight:700;color:#374151;">{{ q.displayAuthor }}</span>
+                <sc-if value="{{ q.answered }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:10px;font-weight:600;color:#15803d;background:#dcfce7;padding:2px 7px;border-radius:999px;">Đã giải đáp</span>
+                </sc-if>
+              </div>
+              <p style="margin:6px 0;font-size:13px;color:#111827;line-height:1.4;">{{ q.text }}</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:11px;color:#9ca3af;">Slide {{ q.slideNumber }}</span>
+                <div onClick="{{ q.onLike }}" style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="{{ q.likeColor }}"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 3.5 0 6 3.5 4 7.5C19 16.65 12 21 12 21z"/></svg>
+                  <span style="font-size:12px;color:{{ q.likeColor }};font-weight:600;">{{ q.likes }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+
+  <sc-if value="{{ toastVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 22px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 6px 20px rgba(0,0,0,0.25);z-index:50;animation:toastIn .25s ease;">{{ toastMessage }}</div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;initialView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;student&quot;,&quot;options&quot;:[&quot;student&quot;,&quot;instructor&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;seedSampleQuestions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+class Component extends DCLogic {
+  static SLIDES = [
+    {number:1, title:'Tổng Quan Data Pipeline', layout:'bullets', bullets:[
+      'Data pipeline là chuỗi bước di chuyển và xử lý dữ liệu từ nguồn đến đích',
+      'Ba giai đoạn chính: Extract, Transform, Load',
+      'Thiết kế pipeline ảnh hưởng trực tiếp đến chất lượng dữ liệu cho AI',
+    ]},
+    {number:2, title:'Các Thành Phần Trong Data Pipeline', layout:'bullets', bullets:[
+      'Nguồn dữ liệu: database, API, file, sự kiện streaming',
+      'Tầng xử lý: làm sạch, chuẩn hoá, làm giàu dữ liệu',
+      'Tầng lưu trữ: data warehouse, data lake, vector store',
+    ]},
+    {number:3, title:'Batch vs Streaming Pipeline', layout:'bullets', bullets:[
+      'Batch: xử lý theo lô, phù hợp dữ liệu không cần cập nhật tức thời',
+      'Streaming: xử lý liên tục, phù hợp ứng dụng cần độ trễ thấp',
+      'Nhiều hệ thống thực tế kết hợp cả hai mô hình',
+    ]},
+    {number:4, title:'Minh Họa ETL vs. ELT Trong Hệ AI', layout:'diagram', bullets:[]},
+    {number:5, title:'Data Observability Là Gì?', layout:'bullets', bullets:[
+      'Khả năng quan sát tình trạng sức khoẻ của dữ liệu trong toàn bộ pipeline',
+      'Gồm 5 trụ cột: freshness, distribution, volume, schema, lineage',
+      'Giúp phát hiện sớm lỗi dữ liệu trước khi ảnh hưởng đến mô hình AI',
+    ]},
+    {number:6, title:'Các Chỉ Số Giám Sát Pipeline', layout:'bullets', bullets:[
+      'Độ trễ xử lý (latency) và tỷ lệ lỗi (error rate)',
+      'Tính đầy đủ và tính nhất quán của schema dữ liệu',
+      'Cảnh báo tự động khi chỉ số vượt ngưỡng',
+    ]},
+    {number:7, title:'Xử Lý Sự Cố Trong Pipeline', layout:'bullets', bullets:[
+      'Ghi log chi tiết ở từng bước để truy vết nguyên nhân',
+      'Thiết lập cơ chế retry và dead-letter queue',
+      'Rollback về phiên bản dữ liệu ổn định gần nhất',
+    ]},
+  ];
+
+  state = {
+    viewMode: this.props.initialView === 'instructor' ? 'instructor' : 'student',
+    studentSlide: 1,
+    instructorScreen: 'dashboard',
+    instructorSlide: 1,
+    activeQuestionId: null,
+    drawerOpen: false,
+    draftText: '',
+    toast: null,
+    nextAuthorNumber: 9,
+    sidebarCollapsed: false,
+    questions: this.props.seedSampleQuestions === false ? [] : [
+      {id:1, text:'Data pipeline khác Data Engineering ở điểm nào ạ?', slideNumber:2, milestoneId:1, answered:true, likes:4, likedByMe:false, mine:false, authorLabel:'Học viên 3'},
+      {id:2, text:'Với hệ thống nhỏ thì nên chọn batch hay streaming pipeline ạ?', slideNumber:1, milestoneId:1, answered:false, likes:1, likedByMe:false, mine:false, authorLabel:'Học viên 7'},
+      {id:3, text:'ETL và ELT khác nhau chỗ nào, khi nào nên dùng ELT ạ?', slideNumber:4, milestoneId:2, answered:true, likes:6, likedByMe:false, mine:false, authorLabel:'Học viên 2'},
+      {id:4, text:'Data observability có cần setup riêng cho từng pipeline không thầy?', slideNumber:5, milestoneId:2, answered:false, likes:2, likedByMe:false, mine:false, authorLabel:'Học viên 5'},
+    ],
+  };
+
+  getMilestone(n) { return n <= 3 ? {id:1, name:'Data Pipeline Fundamentals'} : {id:2, name:'Data Observability'}; }
+
+  setViewMode(mode) { this.setState({viewMode: mode, drawerOpen: false}); }
+  goStudentSlide(n) { this.setState({studentSlide: n}); }
+  goInstructorSlide(n) { this.setState({instructorSlide: n}); }
+  toggleDrawer() { this.setState(s => ({drawerOpen: !s.drawerOpen})); }
+  toggleSidebar() { this.setState(s => ({sidebarCollapsed: !s.sidebarCollapsed})); }
+  setDraft(v) { this.setState({draftText: v}); }
+
+  submitQuestion() {
+    const {draftText, studentSlide, questions, nextAuthorNumber} = this.state;
+    const text = draftText.trim();
+    if (!text) return;
+    const m = this.getMilestone(studentSlide);
+    const newQ = {id: Date.now(), text, slideNumber: studentSlide, milestoneId: m.id, answered: false, likes: 0, likedByMe: false, mine: true, authorLabel: 'Học viên ' + nextAuthorNumber};
+    this.setState({questions: [...questions, newQ], draftText: '', toast: 'Đã gửi câu hỏi', nextAuthorNumber: nextAuthorNumber + 1});
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => { this.setState({toast: null}); }, 2600);
+  }
+
+  toggleLike(id) {
+    this.setState(s => ({questions: s.questions.map(q => q.id === id ? {...q, likedByMe: !q.likedByMe, likes: q.likes + (q.likedByMe ? -1 : 1)} : q)}));
+  }
+
+  openQuestion(id) {
+    const q = this.state.questions.find(x => x.id === id);
+    if (!q) return;
+    this.setState({viewMode: 'instructor', instructorScreen: 'viewer', activeQuestionId: id, instructorSlide: q.slideNumber});
+  }
+
+  exitToFeed() { this.setState({instructorScreen: 'dashboard', activeQuestionId: null}); }
+
+  markAnswered() {
+    const id = this.state.activeQuestionId;
+    this.setState(s => ({questions: s.questions.map(q => q.id === id ? {...q, answered: true} : q)}));
+  }
+
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+
+  renderVals() {
+    const {viewMode, studentSlide, instructorScreen, instructorSlide, drawerOpen, draftText, toast, questions, activeQuestionId, sidebarCollapsed} = this.state;
+    const slides = Component.SLIDES;
+    const isStudent = viewMode === 'student';
+    const isInstructor = viewMode === 'instructor';
+    const showDashboard = isInstructor && instructorScreen === 'dashboard';
+    const showViewerArea = !showDashboard;
+    const activeSlideNumber = isInstructor ? (instructorScreen === 'viewer' ? instructorSlide : studentSlide) : studentSlide;
+    const activeSlideData = slides.find(s => s.number === activeSlideNumber) || slides[0];
+    const onSlideClick = (n) => { if (isInstructor) this.goInstructorSlide(n); else this.goStudentSlide(n); };
+
+    const sidebarItems = slides.map(s => ({
+      number: s.number, title: s.title,
+      rowBg: s.number === activeSlideNumber ? '#eaf2ff' : 'transparent',
+      iconBg: s.number === activeSlideNumber ? '#1c3a5e' : '#ffffff',
+      iconBorder: s.number === activeSlideNumber ? '#1c3a5e' : '#d1d5db',
+      iconColor: s.number === activeSlideNumber ? '#ffffff' : '#9ca3af',
+      titleWeight: s.number === activeSlideNumber ? 600 : 500,
+      onClick: () => onSlideClick(s.number),
+    }));
+    const filmstripItems = slides.map(s => ({
+      number: s.number,
+      border: s.number === activeSlideNumber ? '2px solid #2563eb' : '1px solid #e5e7eb',
+      onClick: () => onSlideClick(s.number),
+    }));
+
+    const currentMilestone = this.getMilestone(activeSlideNumber);
+    const withDisplay = (q) => ({
+      ...q,
+      displayAuthor: (isStudent && q.mine) ? 'Bạn' : q.authorLabel,
+      cardBg: q.mine ? '#eaf2ff' : '#ffffff',
+      likeColor: q.likedByMe ? '#dc2626' : '#9ca3af',
+      statusLabel: q.answered ? 'Đã giải đáp' : 'Chưa giải đáp',
+      statusBg: q.answered ? '#dcfce7' : '#fef3c7',
+      statusColor: q.answered ? '#15803d' : '#b45309',
+      accentColor: q.answered ? '#16a34a' : '#d97706',
+      onLike: () => this.toggleLike(q.id),
+      onOpen: () => this.openQuestion(q.id),
+    });
+
+    const drawerQuestions = questions.filter(q => q.milestoneId === currentMilestone.id).map(withDisplay).sort((a, b) => b.id - a.id);
+    const milestone1Questions = questions.filter(q => q.milestoneId === 1).map(withDisplay).sort((a, b) => b.id - a.id);
+    const milestone2Questions = questions.filter(q => q.milestoneId === 2).map(withDisplay).sort((a, b) => b.id - a.id);
+    const activeQuestionRaw = questions.find(q => q.id === activeQuestionId);
+    const activeQuestion = activeQuestionRaw ? {...withDisplay(activeQuestionRaw), answeredNot: !activeQuestionRaw.answered, hasLikes: activeQuestionRaw.likes > 0} : {text: '', answered: false, answeredNot: true, hasLikes: false, likes: 0};
+    const totalQuestions = questions.length;
+
+    const headerBreadcrumb = showDashboard ? 'Bài 21 · Bảng câu hỏi học viên' : 'Bài 21 · Day10-data-pipeline-observability';
+    const headerProgressLabel = showDashboard ? (totalQuestions + ' câu hỏi') : (activeSlideNumber + '/7 bài');
+    const progressPercent = Math.round((activeSlideNumber / 7) * 100);
+    const submitDisabled = !draftText.trim();
+
+    return {
+      isStudent, isInstructor, showDashboard, showViewerArea,
+      setStudent: () => this.setViewMode('student'),
+      setInstructor: () => this.setViewMode('instructor'),
+      studentToggleBg: isStudent ? '#ffffff' : 'transparent',
+      studentToggleColor: isStudent ? '#111827' : 'rgba(255,255,255,0.65)',
+      instructorToggleBg: isInstructor ? '#ffffff' : 'transparent',
+      instructorToggleColor: isInstructor ? '#111827' : 'rgba(255,255,255,0.65)',
+      headerBreadcrumb, headerProgressLabel, progressPercent,
+      activeSlideData,
+      isDiagramSlide: activeSlideData.layout === 'diagram',
+      isBulletSlide: activeSlideData.layout !== 'diagram',
+      slideBullets: activeSlideData.bullets,
+      activeSlideNumber,
+      sidebarItems, filmstripItems,
+      sidebarCollapsed, sidebarExpanded: !sidebarCollapsed,
+      sidebarWidth: sidebarCollapsed ? 32 : 260,
+      sidebarPadding: sidebarCollapsed ? '12px 6px' : '20px',
+      toggleSidebar: () => this.toggleSidebar(),
+      showFabButton: isStudent,
+      drawerOpen,
+      drawerWidth: (isStudent && drawerOpen) ? 380 : 0,
+      drawerBorder: (isStudent && drawerOpen) ? '1px solid #e5e7eb' : 'none',
+      toggleDrawer: () => this.toggleDrawer(),
+      draftText,
+      onDraftChange: (e) => this.setDraft(e.target.value),
+      submitDisabled,
+      submitBg: submitDisabled ? '#e5e7eb' : '#2563eb',
+      submitColor: submitDisabled ? '#9ca3af' : '#ffffff',
+      submitCursor: submitDisabled ? 'not-allowed' : 'pointer',
+      submitQuestion: () => this.submitQuestion(),
+      currentMilestone,
+      drawerQuestions, drawerEmpty: drawerQuestions.length === 0,
+      toastVisible: !!toast, toastMessage: toast || '',
+      showQuestionBanner: isInstructor && instructorScreen === 'viewer',
+      activeQuestion,
+      exitToFeed: () => this.exitToFeed(),
+      markAnswered: () => this.markAnswered(),
+      milestone1Questions, milestone1Empty: milestone1Questions.length === 0,
+      milestone2Questions, milestone2Empty: milestone2Questions.length === 0,
+      studentSlide,
+    };
+  }
+}
+</script>
+</body>
+</html>
