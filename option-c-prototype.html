@@ -1,0 +1,1684 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn · Option C — AI Rejoin</title>
+  <style>
+    :root {
+      --ink: #27292b;
+      --muted: #69716e;
+      --line: #dce2e5;
+      --shell: #f5f7f8;
+      --blue: #175793;
+      --slide-blue: #315b91;
+      --slide-blue-light: #718db5;
+      --red: #ce3b3f;
+      --green: #247257;
+      --gold-soft: #fff4b8;
+      --gold-ink: #6d5717;
+      --purple: #7356a5;
+      --shadow: 0 14px 38px rgba(21, 38, 51, 0.16);
+      --header-h: 72px;
+      --sidebar-w: 292px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--shell);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+    }
+    button { color: inherit; font: inherit; }
+    button:focus-visible {
+      outline: 3px solid rgba(23, 87, 147, 0.25);
+      outline-offset: 2px;
+    }
+
+    /* VLearn shell */
+    .app-header {
+      position: sticky;
+      z-index: 50;
+      top: 0;
+      display: flex;
+      align-items: center;
+      height: var(--header-h);
+      padding: 0 24px;
+      border-bottom: 1px solid #d8dde1;
+      background: white;
+      box-shadow: 0 1px 3px rgba(34, 47, 58, 0.07);
+    }
+    .back {
+      width: 42px;
+      height: 42px;
+      margin-right: 12px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      font-size: 32px;
+      cursor: pointer;
+    }
+    .course-title {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 25px;
+      font-weight: 650;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .header-progress {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-left: auto;
+      padding-left: 24px;
+      color: #5f6265;
+      font-size: 21px;
+    }
+    .progress-track {
+      width: 150px;
+      height: 10px;
+      border-radius: 999px;
+      background: #eceeef;
+    }
+    .header-divider {
+      width: 1px;
+      height: 42px;
+      margin: 0 16px;
+      background: #e5e7e9;
+    }
+    .ai-mark { color: #86254d; font-size: 28px; }
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      margin-left: 18px;
+      border-radius: 50%;
+      color: #0e447a;
+      background: #deedf9;
+      font-size: 23px;
+      font-weight: 750;
+    }
+    .app-body {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: calc(100vh - var(--header-h));
+    }
+    .sidebar {
+      position: sticky;
+      top: var(--header-h);
+      align-self: start;
+      height: calc(100vh - var(--header-h));
+      overflow: hidden auto;
+      border-right: 1px solid #dce1e4;
+      background: white;
+    }
+    .sidebar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      padding: 0 18px 0 24px;
+      border-bottom: 1px solid #ebedef;
+      color: #5e6265;
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: .07em;
+    }
+    .sidebar-close {
+      border: 0;
+      background: transparent;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .module-head {
+      display: flex;
+      justify-content: space-between;
+      padding: 22px 24px 8px;
+      font-size: 21px;
+      font-weight: 700;
+    }
+    .module-type, .section-label {
+      padding: 0 24px 14px;
+      font-size: 21px;
+      font-weight: 650;
+    }
+    .section-label {
+      padding-top: 6px;
+      padding-bottom: 10px;
+      color: #5e6265;
+      font-size: 20px;
+    }
+    .lesson-list { display: grid; gap: 6px; padding: 0 8px 24px; }
+    .lesson-item {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-height: 78px;
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+    .lesson-item.active { background: #eef5fb; font-weight: 650; }
+    .lesson-dot {
+      width: 26px;
+      height: 26px;
+      border: 3px solid #8a8e91;
+      border-radius: 50%;
+    }
+    .lesson-dot.play {
+      display: grid;
+      place-items: center;
+      border: 0;
+      color: white;
+      background: var(--blue);
+      font-size: 12px;
+    }
+    .lesson-name {
+      overflow: hidden;
+      font-size: 17px;
+      line-height: 1.3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lesson-kind {
+      margin-top: 3px;
+      color: #686b6e;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    main { min-width: 0; padding: 26px 30px 36px; }
+    .reader { max-width: 1240px; margin: auto; }
+
+    /* Slide fixture */
+    .slide-frame {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid #d7dde2;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 5px 16px rgba(25, 41, 55, 0.08);
+      user-select: text;
+    }
+    .slide {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      min-height: 510px;
+      overflow: hidden;
+      background: white;
+    }
+    .slide-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      padding: 0 34px;
+      color: white;
+      background: var(--slide-blue);
+    }
+    .slide-title {
+      font-size: clamp(28px, 3.1vw, 43px);
+      font-weight: 750;
+      letter-spacing: -.025em;
+    }
+    .uni {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .uni-symbol { position: relative; width: 25px; height: 20px; }
+    .uni-symbol::before, .uni-symbol::after {
+      position: absolute;
+      top: 1px;
+      width: 14px;
+      height: 17px;
+      content: "";
+      background: white;
+      clip-path: polygon(0 0, 100% 42%, 54% 100%, 0 60%);
+    }
+    .uni-symbol::before { left: 0; }
+    .uni-symbol::after { right: 0; transform: scaleX(-1); }
+    .title-underline {
+      width: 108px;
+      height: 5px;
+      margin-left: 34px;
+      background: var(--red);
+    }
+    .slide-content {
+      position: absolute;
+      inset: 77px 0 31px;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 6.5% 18px;
+    }
+    .era-row {
+      display: grid;
+      grid-template-columns: 1fr 54px 1fr 54px 1fr;
+      align-items: center;
+      margin-top: auto;
+    }
+    .era { min-width: 0; text-align: center; }
+    .era-year {
+      margin-bottom: 11px;
+      color: #777;
+      font-size: clamp(16px, 1.45vw, 22px);
+      font-weight: 750;
+    }
+    .era-year.blue { color: var(--slide-blue); }
+    .era-year.red { color: var(--red); }
+    .term-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 79%;
+      min-height: 104px;
+      margin: auto;
+      border-radius: 16px;
+      color: white;
+      background: #777;
+    }
+    .term-card.lake { background: var(--slide-blue-light); }
+    .term-card.lakehouse { background: #d45d61; }
+    .approved-term {
+      display: inline;
+      max-width: calc(100% - 18px);
+      padding: 4px 8px 6px;
+      border: 0;
+      border-radius: 5px;
+      color: inherit;
+      background: transparent;
+      font-size: clamp(21px, 2.15vw, 31px);
+      font-weight: 750;
+      line-height: 1.18;
+      cursor: default;
+      transition: background 150ms ease, box-shadow 150ms ease;
+    }
+    .approved-term.highlighted {
+      color: #222;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 8%,
+          rgba(255, 240, 143, .98) 8%,
+          rgba(255, 240, 143, .98) 92%,
+          transparent 92%
+        );
+      box-shadow: 0 0 0 1px rgba(142, 111, 13, .22);
+      cursor: pointer;
+    }
+    .approved-term.highlighted:hover,
+    .approved-term.highlighted[aria-expanded="true"] {
+      background: #ffe575;
+      box-shadow: 0 0 0 3px rgba(229, 184, 39, .28);
+    }
+    .approved-term.highlighted.mastered {
+      color: #163e31;
+      background: #bfe7d5;
+      box-shadow: 0 0 0 1px rgba(36, 114, 87, .28);
+    }
+    .approved-term.highlighted.mastered::after {
+      margin-left: 5px;
+      color: var(--green);
+      content: "✓";
+      font-size: .68em;
+      vertical-align: top;
+    }
+    .approved-term:disabled { opacity: 1; }
+    .era-copy {
+      min-height: 74px;
+      margin: 13px auto 0;
+      color: #303235;
+      font-size: clamp(13px, 1.38vw, 20px);
+      line-height: 1.33;
+    }
+    .arrow {
+      position: relative;
+      height: 4px;
+      margin-top: 18px;
+      background: var(--slide-blue-light);
+    }
+    .arrow::after {
+      position: absolute;
+      top: 50%;
+      right: -1px;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-left: 15px solid var(--slide-blue-light);
+      content: "";
+      transform: translateY(-50%);
+    }
+    .innovation {
+      width: 58%;
+      margin: 26px auto auto;
+      padding: 9px 14px;
+      border: 2px solid var(--red);
+      border-radius: 10px;
+      background: #fffafa;
+      font-size: clamp(12px, 1.22vw, 17px);
+      line-height: 1.35;
+      text-align: left;
+    }
+    .slide-anchor {
+      border-radius: 3px;
+      transition: background 180ms ease, box-shadow 180ms ease;
+    }
+    .slide-anchor.pulse {
+      background: #ffe577;
+      box-shadow: 0 0 0 4px rgba(232, 194, 80, .28);
+      animation: anchor-pulse 850ms ease 2;
+    }
+    @keyframes anchor-pulse {
+      50% { box-shadow: 0 0 0 9px rgba(232, 194, 80, .12); }
+    }
+    .slide-footer {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr .85fr;
+      height: 31px;
+      color: white;
+      background: var(--slide-blue);
+      font-size: clamp(11px, 1.2vw, 17px);
+    }
+    .footer-cell { display: flex; align-items: center; padding: 0 22px; }
+    .footer-cell:nth-child(2) { justify-content: center; background: #4f73a2; }
+    .footer-cell:nth-child(3) { justify-content: flex-end; background: #728db3; }
+
+    /* Compact feature control */
+    .knowledge-control {
+      position: absolute;
+      z-index: 12;
+      top: 90px;
+      right: 16px;
+    }
+    .knowledge-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 39px;
+      padding: 7px 9px 7px 12px;
+      border: 1px solid #d6b849;
+      border-radius: 999px;
+      color: var(--gold-ink);
+      background: #fff9dc;
+      box-shadow: 0 3px 10px rgba(71, 58, 12, .1);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .knowledge-chip:hover { background: #fff4c1; }
+    .chip-state {
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: #46514c;
+      background: rgba(255,255,255,.85);
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .control-menu {
+      position: fixed;
+      z-index: 90;
+      display: none;
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #cbd3d8;
+      border-radius: 14px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+    .control-menu.open { display: block; }
+    .menu-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 0 4px 7px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .menu-title { font-size: 17px; font-weight: 750; }
+    .close-x {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #666;
+      font-size: 23px;
+      cursor: pointer;
+    }
+    .menu-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 52px;
+      padding: 8px;
+    }
+    .menu-row + .menu-row { border-top: 1px solid var(--line); }
+    .scope-label { font-size: 15px; font-weight: 650; }
+    .scope-status { margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 27px;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: #aeb5b8;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+    .switch::after {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 4px rgba(22,29,34,.28);
+      content: "";
+      transition: transform 150ms ease;
+    }
+    .switch[aria-checked="true"] { background: var(--green); }
+    .switch[aria-checked="true"]::after { transform: translateX(19px); }
+    .scope-button {
+      min-width: 70px;
+      padding: 7px 12px;
+      border: 1px solid #cbd3d7;
+      border-radius: 9px;
+      background: white;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .scope-button:hover:not(:disabled) { background: #f2f7fa; }
+    .scope-button:disabled { color: #a1a6a8; background: #f3f4f5; cursor: not-allowed; }
+    .menu-summary {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 8px 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .teacher-preview-button {
+      width: 100%;
+      margin-top: 9px;
+      padding: 9px 10px;
+      border: 1px solid #c9d7e0;
+      border-radius: 9px;
+      color: #174e81;
+      background: #f3f8fc;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .teacher-preview-button:hover { background: #e9f3fa; }
+    .verified-dot {
+      display: inline-grid;
+      place-items: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      color: white;
+      background: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    /* One popup at a time */
+    .term-popup {
+      position: fixed;
+      z-index: 100;
+      display: none;
+      width: min(470px, calc(100vw - 28px));
+      max-height: calc(100vh - 24px);
+      overflow: auto;
+      border: 1px solid #cfd7db;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 16px 42px rgba(18,34,48,.2);
+    }
+    .term-popup.open { display: block; animation: popup-in 130ms ease-out; }
+    @keyframes popup-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .popup-arrow {
+      position: absolute;
+      top: -7px;
+      left: var(--arrow-left, 36px);
+      width: 13px;
+      height: 13px;
+      border-top: 1px solid #cfd7db;
+      border-left: 1px solid #cfd7db;
+      background: white;
+      transform: rotate(45deg);
+    }
+    .term-popup.above .popup-arrow {
+      top: auto;
+      bottom: -7px;
+      border: 0;
+      border-right: 1px solid #cfd7db;
+      border-bottom: 1px solid #cfd7db;
+    }
+    .popup-body {
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+      border-radius: inherit;
+      background: white;
+    }
+    .popup-topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .popup-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: #1d634a;
+      background: #e8f5ef;
+      font-size: 11px;
+      font-weight: 750;
+    }
+    .popup-badge.temporary { color: #5b4384; background: #f0ebfa; }
+    .popup-title { margin: 11px 0 5px; font-size: 22px; line-height: 1.22; }
+    .popup-translation { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .popup-definition { margin: 0; color: #33383a; font-size: 15px; line-height: 1.5; }
+    .popup-context {
+      margin-top: 13px;
+      padding: 10px 11px;
+      border-left: 3px solid var(--slide-blue);
+      color: #3d474d;
+      background: #f3f7fa;
+      font-size: 13px;
+      line-height: 1.42;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+    .tag {
+      padding: 4px 8px;
+      border: 1px solid #d9dfe2;
+      border-radius: 999px;
+      color: #586064;
+      font-size: 11px;
+      font-weight: 650;
+    }
+    .popup-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .unclear-button {
+      padding: 7px 10px;
+      border: 1px solid #c8d1d6;
+      border-radius: 8px;
+      background: white;
+      color: #34444c;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .signal-note {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.3;
+      text-align: right;
+    }
+    .bridge-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 13px;
+      color: #6d5a1c;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .035em;
+      text-transform: uppercase;
+    }
+    .bridge-time {
+      color: #6d7471;
+      font-weight: 650;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .concept-bridge {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr) 24px minmax(0, 1fr);
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      padding: 11px;
+      border: 1px solid #eadb9a;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fffdf2, #fff8d9);
+    }
+    .bridge-node {
+      display: grid;
+      place-items: center;
+      min-height: 54px;
+      padding: 6px;
+      border: 1px solid #d9d2b4;
+      border-radius: 9px;
+      background: white;
+      color: #3a403d;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.25;
+      text-align: center;
+    }
+    .bridge-node.result {
+      border-color: #699f89;
+      color: #15533d;
+      background: #eaf7f1;
+    }
+    .bridge-operator {
+      color: #9b7b18;
+      font-size: 19px;
+      font-weight: 800;
+      text-align: center;
+    }
+    .why-line {
+      margin: 10px 0 0;
+      color: #42494c;
+      font-size: 13px;
+      line-height: 1.42;
+    }
+    .quick-check {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid var(--line);
+    }
+    .check-label {
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+    }
+    .check-question {
+      margin: 5px 0 9px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .quiz-options { display: grid; gap: 6px; }
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #d5dcdf;
+      border-radius: 9px;
+      background: white;
+      color: #3b4144;
+      font-size: 12px;
+      line-height: 1.3;
+      text-align: left;
+      cursor: pointer;
+    }
+    .quiz-option::before {
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      border: 1px solid #b9c3c8;
+      border-radius: 50%;
+      content: attr(data-letter);
+      font-size: 10px;
+      font-weight: 750;
+    }
+    .quiz-option:hover:not(:disabled) { border-color: #7b9fba; background: #f4f8fb; }
+    .quiz-option.correct {
+      border-color: #65a78b;
+      color: #15533d;
+      background: #eaf7f1;
+    }
+    .quiz-option.wrong {
+      border-color: #d98c8e;
+      color: #853538;
+      background: #fff0f0;
+    }
+    .check-feedback {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+    .check-feedback.show { display: block; }
+    .check-feedback.success { color: #15533d; background: #eaf7f1; }
+    .check-feedback.retry { color: #7b4d12; background: #fff5d9; }
+    .deep-dive-button {
+      padding: 7px 10px;
+      border: 1px solid #8ab1d0;
+      border-radius: 8px;
+      color: #174e81;
+      background: #f3f8fc;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Instructor lens: hidden from the learner flow, opened only in demo mode */
+    .insight-backdrop {
+      position: fixed;
+      z-index: 140;
+      inset: 0;
+      display: none;
+      background: rgba(16, 28, 37, .28);
+      backdrop-filter: blur(2px);
+    }
+    .insight-backdrop.open { display: block; }
+    .insight-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(430px, 92vw);
+      height: 100%;
+      overflow: auto;
+      padding: 24px;
+      background: #f8fafb;
+      box-shadow: -14px 0 42px rgba(16, 30, 42, .18);
+    }
+    .insight-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .demo-label {
+      display: inline-block;
+      padding: 4px 7px;
+      border-radius: 999px;
+      color: #7b4d12;
+      background: #fff0bd;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .insight-title { margin: 9px 0 4px; font-size: 24px; }
+    .insight-subtitle { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .insight-card {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+    }
+    .insight-card h3 { margin: 0 0 14px; font-size: 15px; }
+    .signal-row { margin-top: 13px; }
+    .signal-label { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 650; }
+    .signal-level { color: var(--muted); font-weight: 500; }
+    .signal-bar { height: 7px; margin-top: 6px; overflow: hidden; border-radius: 999px; background: #edf0f2; }
+    .signal-bar span { display: block; height: 100%; border-radius: inherit; background: #d7a93f; }
+    .signal-row.high .signal-bar span { background: #cf5f61; }
+    .signal-row.low .signal-bar span { background: #66a58a; }
+    .ai-recommendation {
+      margin-top: 12px;
+      padding: 12px;
+      border-left: 3px solid var(--purple);
+      color: #41464a;
+      background: #f4f0fb;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .approve-button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 9px;
+      color: white;
+      background: var(--green);
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    /* Option C — AI Rejoin */
+    .rejoin-control {
+      position: absolute;
+      z-index: 18;
+      top: 90px;
+      right: 16px;
+      display: grid;
+      justify-items: end;
+      gap: 6px;
+    }
+    .live-context {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border: 1px solid #d7e1e7;
+      border-radius: 999px;
+      color: #566268;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 2px 8px rgba(28,45,58,.08);
+      font-size: 10px;
+      font-weight: 650;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2b8a65;
+      box-shadow: 0 0 0 3px rgba(43,138,101,.14);
+      animation: live-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes live-pulse { 50% { opacity: .4; } }
+    .rejoin-actions { display: flex; align-items: center; gap: 7px; }
+    .lost-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 8px 14px;
+      border: 1px solid #174e81;
+      border-radius: 999px;
+      color: white;
+      background: #175793;
+      box-shadow: 0 5px 14px rgba(23,87,147,.22);
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease;
+    }
+    .lost-button:hover:not(:disabled) { background: #0f467c; transform: translateY(-1px); }
+    .lost-button:disabled { color: #dce9f3; background: #527da2; cursor: wait; }
+    .lost-button.recovered { color: #174c3a; border-color: #77aa95; background: #dff2e9; cursor: default; }
+    .lost-icon { font-size: 19px; line-height: 1; }
+    .instructor-demo-button {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 1px solid #c8d2d8;
+      border-radius: 50%;
+      color: #59646a;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 3px 10px rgba(28,45,58,.1);
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .instructor-demo-button:hover { color: #174e81; background: #f2f7fb; }
+    .rejoin-ribbon {
+      position: absolute;
+      z-index: 28;
+      right: 6.5%;
+      bottom: 43px;
+      left: 6.5%;
+      display: none;
+      min-height: 124px;
+      padding: 16px 48px 16px 18px;
+      border: 1px solid #9cc5e0;
+      border-left: 5px solid var(--blue);
+      border-radius: 14px;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 18px 42px rgba(20,42,57,.2);
+    }
+    .rejoin-ribbon.open { display: block; animation: ribbon-up 180ms ease-out; }
+    @keyframes ribbon-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .rejoin-close {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      color: #687176;
+      background: transparent;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .rejoin-stage-label {
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .075em;
+      text-transform: uppercase;
+    }
+    .capture-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 78px;
+    }
+    .capture-wave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #eaf4fb;
+    }
+    .capture-wave span {
+      width: 4px;
+      height: 15px;
+      border-radius: 999px;
+      background: var(--blue);
+      animation: wave 700ms ease-in-out infinite alternate;
+    }
+    .capture-wave span:nth-child(2) { height: 25px; animation-delay: -350ms; }
+    .capture-wave span:nth-child(3) { height: 19px; animation-delay: -180ms; }
+    @keyframes wave { to { transform: scaleY(.45); opacity: .55; } }
+    .capture-title { margin: 5px 0 3px; font-size: 18px; font-weight: 760; }
+    .capture-copy { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .bridge-stage { display: grid; grid-template-columns: 1.15fr .85fr; gap: 15px; align-items: center; }
+    .instant-bridge {
+      display: grid;
+      grid-template-columns: 1fr 22px 1.25fr 22px 1fr;
+      align-items: center;
+      gap: 3px;
+      margin-top: 8px;
+    }
+    .instant-node {
+      display: grid;
+      place-items: center;
+      min-height: 47px;
+      padding: 6px;
+      border: 1px solid #d6dee2;
+      border-radius: 9px;
+      color: #374146;
+      background: #f9fbfc;
+      font-size: 11px;
+      font-weight: 720;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .instant-node.key { color: #6b5310; border-color: #e3c86f; background: #fff7d7; }
+    .instant-node.result { color: #15533d; border-color: #7fb39d; background: #eaf7f1; }
+    .instant-op { color: #7d878c; font-size: 16px; font-weight: 800; text-align: center; }
+    .shadow-buffer {
+      padding: 11px 12px;
+      border: 1px solid #dbe5ea;
+      border-radius: 10px;
+      color: #475158;
+      background: #f2f7fa;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .shadow-buffer strong { display: block; margin-bottom: 3px; color: #174e81; }
+    .bridge-progress {
+      height: 4px;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7ecef;
+    }
+    .bridge-progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+      animation: bridge-countdown 4.2s linear forwards;
+    }
+    @keyframes bridge-countdown { to { width: 100%; } }
+    .rejoin-summary { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: stretch; }
+    .summary-card {
+      padding: 10px 12px;
+      border: 1px solid #dce3e6;
+      border-radius: 10px;
+      color: #40484c;
+      background: #f9fbfc;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .summary-card.now { border-color: #8ab8a5; background: #edf8f3; }
+    .summary-card strong { display: block; margin-bottom: 4px; color: #576167; font-size: 10px; letter-spacing: .045em; text-transform: uppercase; }
+    .summary-card.now strong { color: #216148; }
+    .rejoin-now-button {
+      min-width: 118px;
+      padding: 10px 13px;
+      border: 0;
+      border-radius: 10px;
+      color: white;
+      background: var(--green);
+      font-size: 12px;
+      font-weight: 780;
+      cursor: pointer;
+    }
+    .rejoin-success {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-height: 82px;
+      color: #164b39;
+    }
+    .success-check {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      color: white;
+      background: var(--green);
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .rejoin-success h3 { margin: 0 0 3px; font-size: 18px; }
+    .rejoin-success p { margin: 0; color: #5a6661; font-size: 12px; }
+
+    /* Selection-to-explain fallback */
+    .selection-action {
+      position: fixed;
+      z-index: 110;
+      display: none;
+      align-items: center;
+      gap: 7px;
+      max-width: min(360px, calc(100vw - 24px));
+      padding: 6px 7px 6px 10px;
+      border: 1px solid #bbb0d1;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 9px 28px rgba(30,24,43,.18);
+    }
+    .selection-action.open { display: flex; }
+    .selection-quote {
+      overflow: hidden;
+      color: #565b5e;
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .explain-button {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border: 0;
+      border-radius: 7px;
+      color: white;
+      background: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Reader tools */
+    .reader-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: 14px;
+      padding: 7px;
+      border: 1px solid #d1d7da;
+      border-radius: 13px;
+      background: white;
+      box-shadow: 0 5px 14px rgba(23,39,52,.07);
+    }
+    .pen-tool {
+      display: grid;
+      place-items: center;
+      width: 45px;
+      height: 45px;
+      margin-right: 3px;
+      border: 0;
+      border-radius: 50%;
+      color: white;
+      background: #0f4e89;
+      font-size: 23px;
+    }
+    .tool-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 0 11px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: #505457;
+      font-size: 14px;
+    }
+    .tool-button.active {
+      border-color: #78afe0;
+      color: #174e81;
+      background: #f1f7fc;
+      font-weight: 650;
+    }
+    .tool-divider { width: 1px; height: 30px; background: #e2e5e7; }
+    .ask-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      padding: 0 8px;
+      color: #697176;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .ask-icon {
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #b9c0c4;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .thumbnail-strip {
+      display: grid;
+      grid-template-columns: 34px repeat(7, minmax(90px, 1fr)) 34px;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .thumb-nav { border: 0; background: transparent; font-size: 30px; }
+    .thumbnail {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 3px solid #e3e6e8;
+      border-radius: 7px;
+      background: white;
+    }
+    .thumbnail.selected { border-color: var(--blue); }
+    .thumb-blue { height: 22%; background: var(--slide-blue); }
+    .thumb-lines {
+      width: 72%;
+      height: 8px;
+      margin: 9px auto 0;
+      border-top: 2px solid #d6dadd;
+      border-bottom: 2px solid #e2e5e7;
+    }
+    .thumb-cards { display: flex; gap: 5px; width: 75%; margin: 8px auto; }
+    .thumb-cards span {
+      width: 33.333%;
+      height: 21px;
+      border-radius: 3px;
+      background: #818181;
+    }
+    .thumb-cards span:nth-child(2) { background: var(--slide-blue-light); }
+    .thumb-cards span:nth-child(3) { background: #d45d61; }
+    .thumb-number {
+      position: absolute;
+      bottom: 3px;
+      left: 3px;
+      display: grid;
+      place-items: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 5px;
+      border-radius: 6px;
+      color: white;
+      background: rgba(35,41,44,.72);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .selected .thumb-number { background: var(--blue); }
+    .toast {
+      position: fixed;
+      z-index: 130;
+      right: 22px;
+      bottom: 22px;
+      max-width: min(360px, calc(100vw - 44px));
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: white;
+      background: #26363d;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 150ms ease, transform 150ms ease;
+    }
+    .toast.open { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1100px) {
+      :root { --sidebar-w: 250px; }
+      main { padding: 20px; }
+      .slide { min-height: 440px; }
+      .innovation { width: 68%; }
+      .thumbnail-strip { grid-template-columns: 30px repeat(5, minmax(90px, 1fr)) 30px; }
+      .thumbnail:nth-of-type(n+6) { display: none; }
+    }
+    @media (max-width: 820px) {
+      :root { --header-h: 62px; }
+      .app-header { padding: 0 12px; }
+      .course-title { font-size: 18px; }
+      .header-progress, .header-divider { display: none; }
+      .app-body { display: block; }
+      .sidebar { display: none; }
+      main { padding: 12px; }
+      .slide { min-height: 390px; }
+      .slide-titlebar { min-height: 58px; padding: 0 20px; }
+      .slide-content { inset: 63px 0 27px; padding: 20px 4% 12px; }
+      .era-row { grid-template-columns: 1fr 24px 1fr 24px 1fr; }
+      .term-card { width: 90%; min-height: 82px; }
+      .innovation { width: 76%; margin-top: 15px; }
+      .knowledge-control { top: 70px; right: 10px; }
+      .knowledge-chip { min-height: 34px; font-size: 12px; }
+      .rejoin-control { top: 69px; right: 10px; }
+      .live-context { display: none; }
+      .lost-button { min-height: 36px; padding: 6px 10px; font-size: 11px; }
+      .instructor-demo-button { width: 32px; height: 32px; }
+      .rejoin-ribbon { right: 2%; bottom: 34px; left: 2%; max-height: 78%; overflow: auto; }
+      .bridge-stage { grid-template-columns: 1fr; }
+      .rejoin-summary { grid-template-columns: 1fr 1fr; }
+      .rejoin-now-button { grid-column: 1 / -1; min-height: 36px; }
+      .reader-tools { width: 100%; overflow-x: auto; }
+      .tool-button:nth-of-type(n+5), .tool-divider { display: none; }
+      .thumbnail-strip { grid-template-columns: 28px repeat(3, 1fr) 28px; }
+      .thumbnail:nth-of-type(n+4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <button class="back" type="button" aria-label="Quay lại">←</button>
+    <div class="course-title">Bài 3 · day18-data-lakehouse-architecture</div>
+    <div class="header-progress" aria-label="Tiến độ bài học">
+      <span>0/3 bài</span><div class="progress-track"></div>
+    </div>
+    <div class="header-divider"></div>
+    <span class="ai-mark" aria-hidden="true">✦</span>
+    <div class="avatar" aria-label="Tài khoản T">T</div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" aria-label="Nội dung bài học">
+      <div class="sidebar-head">
+        <span>NỘI DUNG BÀI HỌC</span>
+        <button class="sidebar-close" type="button" aria-label="Đóng mục lục">×</button>
+      </div>
+      <div class="module-head"><span>Module 1</span><span>⌄</span></div>
+      <div class="module-type">Slides</div>
+      <div class="section-label">Slides</div>
+      <nav class="lesson-list">
+        <div class="lesson-item">
+          <span class="lesson-dot play">▷</span>
+          <div><div class="lesson-name">Day18-Track02-Data_Lakehouse_Architecture</div><div class="lesson-kind">Slide</div></div>
+        </div>
+        <div class="lesson-item active">
+          <span class="lesson-dot"></span>
+          <div><div class="lesson-name">day18-data-lakehouse-architecture</div><div class="lesson-kind">Slide</div></div>
+        </div>
+        <div class="lesson-item">
+          <span class="lesson-dot"></span>
+          <div><div class="lesson-name">day18-data-lakehouse-architecture-reading</div><div class="lesson-kind">Slide</div></div>
+        </div>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="reader">
+        <section class="slide-frame" id="slideFrame" aria-label="Slide 6: Evolution of Data Platforms">
+          <article class="slide">
+            <header class="slide-titlebar">
+              <div class="slide-title">Evolution of Data Platforms</div>
+              <div class="uni"><span class="uni-symbol"></span><span>VINUNIVERSITY</span></div>
+            </header>
+            <div class="title-underline"></div>
+
+            <div class="slide-content" id="slideContent">
+              <div class="era-row">
+                <section class="era">
+                  <div class="era-year">2000s</div>
+                  <div class="term-card">
+                    <span class="approved-term">Data<br>Warehouse</span>
+                  </div>
+                  <div class="era-copy"><span class="slide-anchor" data-anchor="warehouse-sql">Structured, SQL</span><br>· Fast queries<br>Đắt, kém flexible</div>
+                </section>
+                <div class="arrow" aria-hidden="true"></div>
+                <section class="era">
+                  <div class="era-year blue">2010s</div>
+                  <div class="term-card lake">
+                    <span class="approved-term">Data<br>Lake</span>
+                  </div>
+                  <div class="era-copy">Cheap, flexible<br>· Any format<br><span class="slide-anchor" data-anchor="data-swamp">“Data swamp”</span></div>
+                </section>
+                <div class="arrow" aria-hidden="true"></div>
+                <section class="era">
+                  <div class="era-year red">2020s</div>
+                  <div class="term-card lakehouse">
+                    <span class="approved-term">Data<br>Lakehouse</span>
+                  </div>
+                  <div class="era-copy"><span class="slide-anchor" data-anchor="acid">ACID</span> + cheap storage<br>Open formats<br>· Best of both</div>
+                </section>
+              </div>
+
+              <div class="innovation">
+                <strong>Key Innovation:</strong> <span class="slide-anchor" data-anchor="metadata">metadata layer</span> biến S3 object storage thành transactional store.<br>
+                <strong>Enablers:</strong> Open table formats (Delta/Iceberg/Hudi) + cheap object storage (S3) + query engines (Spark/DuckDB/Trino).
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <div class="footer-cell">Giảng viên (VinUni)</div>
+              <div class="footer-cell">AICB · Ngày 18</div>
+              <div class="footer-cell">Tuần 4&nbsp;&nbsp;&nbsp; 4 / 50</div>
+            </footer>
+
+            <div class="rejoin-control">
+              <div class="live-context"><span class="live-dot"></span>AI đang giữ ngữ cảnh</div>
+              <div class="rejoin-actions">
+                <button class="lost-button" id="lostButton" type="button">
+                  <span class="lost-icon" aria-hidden="true">◎</span>
+                  <span id="lostButtonLabel">Tôi mất mạch</span>
+                </button>
+                <button class="instructor-demo-button" id="teacherPreview" type="button" aria-label="Xem góc nhìn giảng viên" title="Góc nhìn giảng viên">GV</button>
+              </div>
+            </div>
+
+            <aside class="rejoin-ribbon" id="rejoinRibbon" aria-live="polite" aria-label="AI giúp bắt lại mạch bài giảng">
+              <button class="rejoin-close" id="rejoinClose" type="button" aria-label="Đóng">×</button>
+              <div id="rejoinContent"></div>
+            </aside>
+          </article>
+        </section>
+
+        <div class="reader-tools" aria-label="Công cụ đọc slide">
+          <button class="pen-tool" type="button" aria-label="Ghi chú">✎</button>
+          <button class="tool-button active" type="button">⌁ Đọc</button>
+          <button class="tool-button" type="button">✎ Bút</button>
+          <button class="tool-button" type="button">▱ Highlight</button>
+          <button class="tool-button" type="button">◯ Khoanh</button>
+          <span class="tool-divider"></span>
+          <button class="tool-button" type="button">Từng trang</button>
+          <button class="tool-button" type="button">100%</button>
+          <div class="ask-hint"><span class="ask-icon">◎</span><span>Một chạm để giữ mạch bài giảng</span></div>
+        </div>
+
+        <nav class="thumbnail-strip" aria-label="Danh sách slide">
+          <button class="thumb-nav" type="button" aria-label="Slide trước">‹</button>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">1</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">2</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">3</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">4</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">5</span></div>
+          <div class="thumbnail selected"><div class="thumb-blue"></div><div class="thumb-cards"><span></span><span></span><span></span></div><span class="thumb-number">6</span></div>
+          <div class="thumbnail"><div class="thumb-blue"></div><div class="thumb-lines"></div><span class="thumb-number">7</span></div>
+          <button class="thumb-nav" type="button" aria-label="Slide sau">›</button>
+        </nav>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="insight-backdrop" id="insightBackdrop" aria-hidden="true">
+    <aside class="insight-panel" role="dialog" aria-modal="true" aria-label="Tín hiệu lớp dành cho giảng viên">
+      <div class="insight-head">
+        <div>
+          <span class="demo-label">Dữ liệu mô phỏng</span>
+          <h2 class="insight-title">Cảnh báo nhịp lớp · Slide 6</h2>
+          <p class="insight-subtitle">Tổng hợp ẩn danh từ tín hiệu “Tôi mất mạch”. Không hiển thị danh tính học viên.</p>
+        </div>
+        <button class="close-x" id="insightClose" type="button" aria-label="Đóng">×</button>
+      </div>
+
+      <section class="insight-card">
+        <h3>Tín hiệu mất mạch theo ngữ cảnh</h3>
+        <div class="signal-row high">
+          <div class="signal-label"><span>ACID + metadata</span><span class="signal-level">Tập trung cao</span></div>
+          <div class="signal-bar"><span style="width: 78%"></span></div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-label"><span>Data Lake → Lakehouse</span><span class="signal-level">Đang tăng</span></div>
+          <div class="signal-bar"><span style="width: 55%"></span></div>
+        </div>
+        <div class="signal-row low">
+          <div class="signal-label"><span>Warehouse → Lake</span><span class="signal-level">Ổn định</span></div>
+          <div class="signal-bar"><span style="width: 27%"></span></div>
+        </div>
+      </section>
+
+      <section class="insight-card">
+        <h3>AI đề xuất ngay lúc này</h3>
+        <div class="ai-recommendation">
+          Nhiều tín hiệu đang tập trung tại <strong>ACID</strong>. Có thể dành 20 giây nhắc lại: <strong>Data Lake + metadata/ACID = Lakehouse</strong>.
+        </div>
+        <button class="approve-button" id="approveSuggestion" type="button">Hiện cầu nối cho cả lớp</button>
+      </section>
+    </aside>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const byId = (id) => document.getElementById(id);
+      const lostButton = byId("lostButton");
+      const lostButtonLabel = byId("lostButtonLabel");
+      const rejoinRibbon = byId("rejoinRibbon");
+      const rejoinContent = byId("rejoinContent");
+      const rejoinClose = byId("rejoinClose");
+      const teacherPreview = byId("teacherPreview");
+      const insightBackdrop = byId("insightBackdrop");
+      const insightClose = byId("insightClose");
+      const approveSuggestion = byId("approveSuggestion");
+      const toast = byId("toast");
+
+      const state = {
+        phase: "idle",
+        timers: [],
+        signalCount: 0
+      };
+
+      let toastTimer = 0;
+
+      function schedule(callback, delay) {
+        const timer = window.setTimeout(callback, delay);
+        state.timers.push(timer);
+        return timer;
+      }
+
+      function clearTimers() {
+        state.timers.forEach((timer) => window.clearTimeout(timer));
+        state.timers = [];
+      }
+
+      function showToast(message) {
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add("open");
+        toastTimer = window.setTimeout(() => toast.classList.remove("open"), 2300);
+      }
+
+      function setLostButton(label, options = {}) {
+        lostButtonLabel.textContent = label;
+        lostButton.disabled = Boolean(options.disabled);
+        lostButton.classList.toggle("recovered", Boolean(options.recovered));
+      }
+
+      function openRibbon() {
+        rejoinRibbon.classList.add("open");
+      }
+
+      function resetFlow() {
+        clearTimers();
+        state.phase = "idle";
+        rejoinRibbon.classList.remove("open");
+        rejoinContent.innerHTML = "";
+        setLostButton("Tôi mất mạch");
+      }
+
+      function showCaptureStage() {
+        clearTimers();
+        state.phase = "capturing";
+        state.signalCount += 1;
+        setLostButton("Đang giữ mạch…", { disabled: true });
+        rejoinContent.innerHTML = `
+          <div class="capture-row">
+            <div class="capture-wave" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div>
+              <div class="rejoin-stage-label">AI Rejoin · Prototype · Đã ghi nhận tại Slide 6</div>
+              <div class="capture-title">Bạn cứ tiếp tục nghe</div>
+              <p class="capture-copy">AI đang giữ lại lời giảng và tìm điểm đứt mạch gần nhất. Không cần chọn thuật ngữ.</p>
+            </div>
+          </div>
+        `;
+        openRibbon();
+        schedule(showBridgeStage, 900);
+      }
+
+      function showBridgeStage() {
+        if (state.phase !== "capturing") return;
+        state.phase = "bridging";
+        setLostButton("Cầu nối 5 giây…", { disabled: true });
+        rejoinContent.innerHTML = `
+          <div class="bridge-stage">
+            <div>
+              <div class="rejoin-stage-label">Cầu nối 5 giây · Điểm hụt có thể là ACID</div>
+              <div class="instant-bridge" aria-label="Data Lake cộng Metadata và ACID tạo thành Data Lakehouse">
+                <div class="instant-node">Data Lake</div>
+                <div class="instant-op">+</div>
+                <div class="instant-node key">Metadata<br>+ ACID</div>
+                <div class="instant-op">→</div>
+                <div class="instant-node result">Lakehouse</div>
+              </div>
+            </div>
+            <div class="shadow-buffer">
+              <strong>AI vẫn đang nghe thay bạn</strong>
+              Phần giảng tiếp theo đang được giữ trong bộ đệm để bạn không mất thêm mạch.
+            </div>
+          </div>
+          <div class="bridge-progress" aria-hidden="true"><span></span></div>
+        `;
+        schedule(showRejoinStage, 4300);
+      }
+
+      function showRejoinStage() {
+        if (state.phase !== "bridging") return;
+        state.phase = "ready";
+        setLostButton("Sẵn sàng nhập lại", { disabled: true });
+        rejoinContent.innerHTML = `
+          <div class="rejoin-stage-label">AI đã nén phần vừa trôi qua</div>
+          <div class="rejoin-summary">
+            <div class="summary-card">
+              <strong>Trong lúc bạn đọc</strong>
+              Giảng viên vừa nói: metadata biến dữ liệu trên S3 thành một transactional store.
+            </div>
+            <div class="summary-card now">
+              <strong>Lớp đang ở đây</strong>
+              Open table formats: Delta, Iceberg và Hudi.
+            </div>
+            <button class="rejoin-now-button" id="rejoinNow" type="button">Bắt lại mạch →</button>
+          </div>
+        `;
+        byId("rejoinNow").addEventListener("click", finishRejoin);
+      }
+
+      function finishRejoin() {
+        clearTimers();
+        state.phase = "recovered";
+        setLostButton("Đã bắt lại mạch", { disabled: true, recovered: true });
+        rejoinContent.innerHTML = `
+          <div class="rejoin-success">
+            <div class="success-check">✓</div>
+            <div>
+              <h3>Đã bắt lại mạch bài giảng</h3>
+              <p>Bạn đã được đưa về đúng phần “Open table formats”. Không có bài kiểm tra bắt buộc.</p>
+            </div>
+          </div>
+        `;
+        schedule(resetFlow, 2200);
+      }
+
+      function openInstructorView() {
+        insightBackdrop.classList.add("open");
+        insightBackdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function closeInstructorView() {
+        insightBackdrop.classList.remove("open");
+        insightBackdrop.setAttribute("aria-hidden", "true");
+      }
+
+      function showClassBridge() {
+        clearTimers();
+        state.phase = "broadcast";
+        setLostButton("Cả lớp đang bắt mạch", { disabled: true });
+        rejoinContent.innerHTML = `
+          <div class="bridge-stage">
+            <div>
+              <div class="rejoin-stage-label">Cầu nối từ giảng viên · 20 giây</div>
+              <div class="instant-bridge">
+                <div class="instant-node">Data Lake</div>
+                <div class="instant-op">+</div>
+                <div class="instant-node key">Metadata<br>+ ACID</div>
+                <div class="instant-op">→</div>
+                <div class="instant-node result">Lakehouse</div>
+              </div>
+            </div>
+            <div class="shadow-buffer">
+              <strong>Hiện cho cả lớp</strong>
+              Lakehouse giữ storage rẻ của Data Lake và bổ sung khả năng quản lý giao dịch đáng tin cậy.
+            </div>
+          </div>
+        `;
+        openRibbon();
+        schedule(resetFlow, 5200);
+      }
+
+      lostButton.addEventListener("click", () => {
+        if (state.phase === "idle") showCaptureStage();
+      });
+
+      rejoinClose.addEventListener("click", resetFlow);
+      teacherPreview.addEventListener("click", openInstructorView);
+      insightClose.addEventListener("click", closeInstructorView);
+
+      insightBackdrop.addEventListener("click", (event) => {
+        if (event.target === insightBackdrop) closeInstructorView();
+      });
+
+      approveSuggestion.addEventListener("click", () => {
+        approveSuggestion.disabled = true;
+        approveSuggestion.textContent = "✓ Đã gửi cầu nối đến lớp";
+        showToast("Giảng viên đã chọn nhắc lại trong 20 giây.");
+        schedule(() => {
+          closeInstructorView();
+          showClassBridge();
+          approveSuggestion.disabled = false;
+          approveSuggestion.textContent = "Hiện cầu nối cho cả lớp";
+        }, 650);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeInstructorView();
+        if (state.phase !== "idle") resetFlow();
+      });
+    })();
+  </script>
+</body>
+</html>
